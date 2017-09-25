@@ -74,9 +74,8 @@ export abstract class AbstractRepository < T extends IEntity >
      * @returns
      * @memberof AbstractRepository
      */
-    updateSpecifiedPath(path: string, value: string): Observable<firebase.Promise<void>> {
-      const obj = {[path]: [value]};
-      return Observable.of(this.afDB.object('/').update(obj));
+    updateSpecifiedPath(path: {}): Observable<firebase.Promise<void>> {
+      return Observable.of(this.afDB.object('/').update(path));
     }
     /**
      * Removes an object from the database using multipath updates

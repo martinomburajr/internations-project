@@ -2,7 +2,6 @@ import { Router } from '@angular/router';
 import { UserService } from '../../api/dynamic-library/application-logic/user/service/user.service';
 import { SimpleMasterDetailContainer } from '../../components/container/master-detal/simple/master-detail-container';
 import { SimpleListContainer } from '../../components/container/list/simple-list/simple-list.container.template';
-import { GroupLocalService } from './_local/group-local.service';
 import { Component, OnInit } from '@angular/core';
 import {GroupService} from 'app/api/dynamic-library/application-logic/group/service/group.service';
 import {Observable} from 'rxjs';
@@ -26,7 +25,7 @@ export class GroupComponent implements OnInit {
    * 
    * @memberOf GroupComponent
    */
-  constructor(private _local: GroupLocalService, private groupService: GroupService, private userService: UserService, private router: Router) { 
+  constructor(private groupService: GroupService, private userService: UserService, private router: Router) { 
     this.groups$ = new Observable<GroupEntity[]>(x=>x);
     //this.listContainers$ = new Observable<Array<SimpleListContainer>>(x=>x);
     // this.masterDetailContainer$ = new Observable<SimpleMasterDetailContainer>(x=>x);

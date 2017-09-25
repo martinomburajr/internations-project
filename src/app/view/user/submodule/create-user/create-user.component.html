@@ -1,0 +1,67 @@
+<clr-wizard #wizard [(clrWizardOpen)]="wizardCreateOpen" [clrWizardClosable]="true">
+  <clr-wizard-title>Create a User</clr-wizard-title>
+
+  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'" (click)="onCreateUser()">Finish</clr-wizard-button>
+
+  <clr-wizard-page>
+      <ng-template clrPageTitle>Basics</ng-template>
+      <form>
+          <section class="form-block">
+              <div class="form-group row">
+                  <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                      <label for="gForm_1">Name: </label>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <input class="form-control" name="name" type="text" id="form_name" placeholder="Enter value here" size="45" [(ngModel)]="userCreationObject.user.name">
+                  </div>
+                  <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                          <label for="gForm_1">Email</label>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                          <input class="form-control" name="email" type="email" id="form_email" placeholder="Enter name here" size="45" [(ngModel)]="userCreationObject.user.email">
+                  </div>
+              </div>
+          </section>
+      </form>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+      <ng-template clrPageTitle>Bio Page</ng-template>
+      <form>
+          <section class="form-block">
+              <div class="form-group row">
+                  <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+                      <textarea id="form_bio" name="bio" rows="5" class="form-control" [(ngModel)]="userCreationObject.user.bio"></textarea>
+                  </div>
+              </div>
+          </section>
+      </form>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+          <ng-template clrPageTitle>Select Group</ng-template>
+          <form>
+              <section class="form-block">
+                  <div class="form-group row">
+                      <div class="form-group row">
+                          <label>Current Groups</label>
+                          <ul class="list-group row" data-spy="scroll" *ngFor="let listItem of userCreationObject._groups; let i = index">
+                              <li class="list-group-item list-group-item-action flex-column align-items-start col-10">
+                                  {{listItem}}
+                              </li>
+                          </ul>
+                      </div>
+                      <div class="form-group row">
+                          <select #select name="groups" (change)="onCreateUserMultiSelectBoxChange($event.target.options)" multiple>
+                              <option [value]="group.key" *ngFor="let group of userCreationObject._groups" name ="group" [(ngModel)]="userCreationObject.groups">{{group.name}}</option>
+                          </select>
+                      </div>
+                  </div>
+                  <p style="font-size: 0.8rem">Press Ctrl/Cmd and select multiple</p>
+              </section>
+          </form>
+      </clr-wizard-page>
+</clr-wizard>

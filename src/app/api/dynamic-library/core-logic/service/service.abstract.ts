@@ -91,8 +91,8 @@ export class AbstractService < T extends IEntity > {
          * @returns {Observable<firebase.Promise<void>>}
          * @memberof AbstractService
          */
-        updateSpecifiedPath(path:string, value: string): Observable<firebase.Promise<void>> {
-          return this.updateSpecifiedPath(path, value);
+        updateSpecifiedPath(path: {}): Observable<firebase.Promise<void>> {
+          return this.repository.updateSpecifiedPath(path);
         }
 
         /**

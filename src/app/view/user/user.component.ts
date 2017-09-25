@@ -1,8 +1,6 @@
-import { lang } from 'moment';
 import { SimpleModalContainer } from '../../components/container/modal/simple-modal/simple-modal-container';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { UserLocalService } from './_local/user-local.service';
 import { UserEntity } from '../../api/dynamic-library/application-logic/user/entity/user.entity';
 import { UserService } from '../../api/dynamic-library/application-logic/user/service/user.service';
 import { Component, EventEmitter, OnInit, PACKAGE_ROOT_URL, ViewChild } from '@angular/core';
@@ -11,6 +9,7 @@ import {SimpleMasterDetailContainer} from 'app/components/container/master-detal
 import {GroupService} from 'app/api/dynamic-library/application-logic/group/service/group.service';
 import {Wizard} from 'clarity-angular';
 import {GroupEntity} from 'app/api/dynamic-library/application-logic/group/entity/group.entity';
+import {AngularFireDatabase} from 'angularfire2/database';
 
 @Component({
   selector: 'app-user',
@@ -19,6 +18,8 @@ import {GroupEntity} from 'app/api/dynamic-library/application-logic/group/entit
 })
 export class UserComponent implements OnInit {
 
+  private wizardUpdateOpen = false;
+  private wizardCreateOpen = false;
   private showModal = false;
   private modalOnOkayClick = new EventEmitter<boolean>();
   private modalOnCancelClick = new EventEmitter<boolean>();
@@ -28,8 +29,9 @@ export class UserComponent implements OnInit {
   private listContainers$: Observable<Array<SimpleListContainer>>;
   private masterDetailContainer$: Observable<SimpleMasterDetailContainer>;
 
-  @ViewChild("wizard") wizard: Wizard;
-  open: boolean = false;
+  private currentIndex = 0;
+  private currentIndex$ = new EventEmitter<number>();
+
 
   /**
    * Creates an instance of UserComponent.
@@ -38,10 +40,11 @@ export class UserComponent implements OnInit {
    *
    * @memberOf UserComponent
    */
-  constructor(private groupService: GroupService, private userService: UserService, private router: Router) {
+  constructor(private groupService: GroupService, private userService: UserService, private router: Router, private afDB: AngularFireDatabase) {
     this.modalContainer = new SimpleModalContainer();
     this.loadUsers();
     this.loadGroups();
+    this.currentIndex$.emit(0);
   }
 
   ngOnInit() {
@@ -59,7 +62,6 @@ export class UserComponent implements OnInit {
     this.users$ = this.userService.retrieveAllGenericAsEntity();
 
     /**Load the list content */
-    console.log("LOAD")
     this.listContainers$ = this.users$.map(users => {
       return users.map((user:UserEntity,index) => {
         let listContainer = new SimpleListContainer();
@@ -83,27 +85,8 @@ export class UserComponent implements OnInit {
     this.groups$ = this.groupService.retrieveAllGenericAsEntity();
   }
 
-  private newUser: UserEntity = new UserEntity();
-  /**
-   *
-   * Routes to create a user
-   *
-   * @memberOf GroupComponent
-   */
-  onCreateUserClick() {
-    this.open = true;
-  }
 
-  onCreateUser() {
-    this.userService.create(this.newUser).subscribe(promise => {
-      promise.then(resolve => {
-        console.log("new user created");
-      })
-      promise.catch(err => {
-        console.log(err.message);
-      })
-    })
-  }
+
 
   /**
    * Routes to update a user
@@ -164,17 +147,17 @@ export class UserComponent implements OnInit {
     })
   }
 
-  onMasterDetailListDeleteClick(index: number) {
-    this.users$.subscribe(users => {
-      debugger;
-      const user = users[this.currentIndex];
-      user.groups.splice(index, 1);
-      this.userService.update(user).subscribe(promise => {
-        promise.then(resolve => console.log("Succesfully updated"));
-        promise.catch(err => console.log(err));
-      });
-    })
-  }
+  // onMasterDetailListDeleteClick(index: number) {
+  //   this.users$.subscribe(users => {
+  //     debugger;
+  //     const user = users[this.currentIndex];
+  //     user.groups.splice(index, 1);
+  //     this.userService.update(user).subscribe(promise => {
+  //       promise.then(resolve => console.log("Succesfully updated"));
+  //       promise.catch(err => console.log(err));
+  //     });
+  //   })
+  // }
 
   onOkClick($event: boolean): boolean {
     console.log($event);
@@ -229,66 +212,68 @@ export class UserComponent implements OnInit {
       return masterDetailContainer;
   }
 
+  // private masterDetailUserData: {user: UserEntity, groups: Array<string>, _groups: Array<GroupEntity>} = {user: new UserEntity(), groups: new Array<string>(), _groups: new Array<GroupEntity>()}
+
+
   onListItemClick(index: number) {
-    console.log(index);
     this.currentIndex = index;
-    this.masterDetailContainer$ = this.users$.map(users => {
-      return this.bindEntityToMasterDetailContainer(users[index]);
-    });
+    this.currentIndex$.emit(index);
   }
 
-  // myOptions: [];
+  onMasterDetailListItemClick(group: GroupEntity) {
 
-  // setSelected(selectElement) {
-  //     for (var i = 0; i < selectElement.options.length; i++) {
-  //         var optionElement = selectElement.options[i];
-  //         var optionModel = this.myOptions[i];
-
-  //         if (optionElement.selected == true) { optionModel.selected = true; }
-  //         else { optionModel.selected = false; }
-  //     }
-  // }
-
-
-
-  @ViewChild('select') selectElRef;
-  public onNewUserMultiSelectBoxChange(items) {
-    console.log(items);
-    this.newUser.groups = Array.apply(null,items)  // convert to real Array
-    .filter(option => option.selected)
-    .map(option => option.value)
-    console.log(this.newUser);
-  }
-
-  public onUpdateUserMultiSelectBoxChange(items) {
-    console.log(items);
-    this.updateUser.groups = Array.apply(null,items)  // convert to real Array
-    .filter(option => option.selected)
-    .map(option => option.value)
-    console.log(this.newUser);
   }
 
 
-  private currentIndex = 0;
-  @ViewChild('wizardUpdate') private wizardUpdate: Wizard;
-  private updateUser$: Observable<UserEntity> = new Observable<UserEntity>(x=>x);
-  private updateUser: UserEntity = new UserEntity();
-  private wizardUpdateOpen = false;
-
-  onUpdateClickPassUser(user: UserEntity) {
-    this.wizardUpdateOpen = true;
-    this.updateUser = user;
-  }
-
-  onUpdateClick() {
-    this.wizardUpdateOpen = true
+  onDeleteUser(index: number) {
+    let path = {};
     this.users$.subscribe(users => {
-      this.updateUser = users[this.currentIndex];
-    });
+      let user = users[index];
+        path['user/' + user.key] = null
+        path['group-by-user' + '/' + user.key] = null;
+        this.afDB.object('/group-by-user'+ '/' + user.key).subscribe(obj  => {
+          let groupKeys = Object.keys(obj);
+          groupKeys.forEach(groupKey => {
+            path['user-by-group/' + groupKey + '/' + user.key] = null;
+          })
+          this.userService.updateSpecifiedPath(path).subscribe(promise => {
+            promise.then(resolve => console.log("Succesfully deleted"));
+            promise.catch(err => console.log(err));
+          });
+        })
+      }) 
   }
 
-  updateUserClick() {
-    this.userService.update(this.updateUser)
+
+  /**
+   * Creates a user upon click
+   * 
+   * 
+   * @memberOf UserComponent
+   */
+  onCreateUserClick() {
+    this.wizardCreateOpen = true;
   }
 
+  /**
+   * Listens to an event from the Master-Detail Subcomponent before allowing the Update Wizard to start
+   * 
+   * @param {any} $event 
+   * 
+   * @memberOf UserComponent
+   */
+  onUpdateClick($event) {
+    this.wizardUpdateOpen = $event;
+  }
+
+  /**
+   * Records the update wizards open/close state and sets the current instance variable to it.
+   * 
+   * @param {any} $event 
+   * 
+   * @memberOf UserComponent
+   */
+  updateWizardState($event) {
+    this.wizardUpdateOpen = $event
+  }
 }

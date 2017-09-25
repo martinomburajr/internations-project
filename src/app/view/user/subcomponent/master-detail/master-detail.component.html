@@ -1,0 +1,63 @@
+<div class="animated fadeIn card">
+  <div>
+      <div class="card-block mce-scroll" style="padding: 0.55rem" data-spy="scroll">
+          <span class="row">
+              <img class="img-avatar col-sm-2" src={{masterDetailUserData.user.image}}>
+              <div class="col-sm-8">
+                  <h6 class="display-4 justify-content-center">{{masterDetailUserData.user.name}}</h6>
+              </div>
+              <div class="col-sm-2">
+                  <div class="btn btn-warning" (click)="onUpdateClick()">
+                      <i class="fa fa-wrench fa-2x"></i>
+                  </div>
+              </div>
+          </span>
+          <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                  <p class="card-text">
+                      {{masterDetailUserData.user.bio}}
+                  </p>
+              </li>
+              <li class="list-group-item">
+                      <p class="card-text">
+                          {{masterDetailUserData.user.email}}
+                      </p>
+                  </li>
+          </ul>
+
+          <h2 class="text-center">Groups</h2>
+          <!-- <template-single-action-list [containers]="(container.list$ | async)"></template-single-action-list> -->
+
+          <!-- LIST -->
+          <div>
+      <div class="list-group row" data-spy="scroll" *ngFor="let listItem of masterDetailUserData._groups; let j = index">
+          <div class="row">
+          <a class="list-group-item list-group-item-action flex-column align-items-start col-10"
+          style="padding: 0.5rem"
+              (click)="onMasterDetailListItemClick(listItem)">
+                  <div class="d-flex w-100 justify-content-between m-0 container">
+                      <div class="row">
+                          <div class="img-avatar">
+                              <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
+                          </div>
+                          <h4 class="display-7">
+                              {{listItem.name}}
+                          </h4>
+                          <div class="align-text-bottom">
+                              <p>{{listItem.description}}</p>
+                              </div>
+                      </div>
+                  </div>
+              </a>
+              <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onDeleteGroupFromUser(listItem)">
+                      <i class="fa fa-trash-o fa-2x"></i>
+              </div>
+              </div>
+      </div>
+      </div>
+      </div>
+      </div>
+    <div class="card-footer">
+        {{masterDetailUserData.user.dob}}
+    </div>
+</div>

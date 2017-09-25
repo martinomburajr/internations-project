@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchBarTemplateModule } from '../../../../components/template/search-bar/concrete/search-bar.template.module';
 import { MasterDetailTemplateModule } from '../../../../components/template/master-detail/master-detail.module';
 import { SimpleListTemplateModule } from '../../../../components/template/list/simple-list/simple-list.module';
-import { GroupLocalService } from '../../_local/group-local.service';
 import { UserRepository } from '../../../../api/dynamic-library/application-logic/user/repository/user.repository';
 import {NgModule} from '@angular/core';
 import {ClarityModule} from 'clarity-angular';
@@ -25,8 +24,9 @@ import {UpdateGroupComponent} from 'app/view/group/submodule/update-group/update
     MasterDetailTemplateModule,
     SimpleListTemplateModule
   ],
+  exports:[CreateGroupComponent],
   declarations: [
     UpdateGroupComponent
-], providers: [GroupLocalService, GroupRepository, GroupService, UserRepository, UserService]
+], providers: [GroupRepository, GroupService, UserRepository, UserService]
 })
 export class UpdateGroupModule { }

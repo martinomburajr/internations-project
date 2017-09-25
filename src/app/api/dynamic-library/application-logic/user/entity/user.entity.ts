@@ -1,4 +1,5 @@
 import {AbstractEntity} from "app/api/dynamic-library/core-logic/entity/abstract-class/entity.abstract";
+import {UtilityService} from "app/api/dynamic-library/core-logic/utility/utils/utility.service";
 
 /**
  * Represents the abstract skeleton for a user
@@ -33,6 +34,7 @@ export class UserEntity extends AbstractEntity implements IUserEntity {
 
     constructor() {
         super();
+        this.key = UtilityService.generateFirebaseID();
         this.name = '';
         this.displayPhoto = '';
         this.email = '';
@@ -42,6 +44,7 @@ export class UserEntity extends AbstractEntity implements IUserEntity {
     }
 
     convertObjectToEntity(key: string, obj: {}): UserEntity {
+        // debugger;
         let userEntity = new UserEntity();
         userEntity.key = key;
         if(obj['name']) {userEntity.name = obj['name']}
@@ -54,4 +57,20 @@ export class UserEntity extends AbstractEntity implements IUserEntity {
         }
         return userEntity;
     }
+
+    purge(): {} {
+          let base = {};
+          base[this.key] = {};
+          if(this.name){base[this.key]['name'] = this.name;}
+          if(this.bio){base[this.key]['bio'] = this.bio;}
+          if(this.dob){base[this.key]['dob'] = this.dob;}
+          if(this.email){base[this.key]['email'] = this.email;}
+          if(this.displayPhoto){base[this.key]['displayPhoto'] = this.displayPhoto}
+        //   if(this.groups){
+        //       base[this.key]['groups'] = {};
+        //       this.groups.forEach(key => {
+        //           base[this.key]['groups'][key] = true;
+        //       })
+          return base;
+      }
 }

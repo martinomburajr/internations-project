@@ -14,6 +14,73 @@ export class UserRepository extends AbstractRepository < UserEntity > {
         this.entity = new UserEntity();
     }
 
+    deletePath(purge: {}) {
+        let path = {};
+        let userPath = {};
+        let groupByUserPath = {};
+        let userByGroupPath = {};
+
+        let userKey = Object.keys(purge)[0];
+        let groupKeys = Object.keys((purge[userKey]['groups']));
+
+        userPath['/user/' + userKey] = purge[userKey];
+        groupKeys.forEach((groupKey:string) => {
+            groupByUserPath['/group-by-user/' + userKey ] = {[groupKey]: true};
+            userByGroupPath['/user-by-group/' + groupKey ] = {[userKey]: true}
+        })
+
+        let userPathKey = Object.keys(userPath)[0];;
+        let groupByUserPathKey = Object.keys(groupByUserPath)[0];;
+        let userByGroupPathKey = Object.keys(userByGroupPath)[0];
+
+        let uP = userPath[userPathKey];
+        let guP = groupByUserPath[groupByUserPathKey];
+        let ugP = userByGroupPath[userByGroupPathKey]
+        path = {
+            [userPathKey]: uP,
+            [groupByUserPathKey]: guP,
+            [userByGroupPathKey]: ugP,
+            };
+        return path;
+    }
+
+    updatePath(purge:{}) {
+        let path = {};
+        let userPath = {};
+        let groupByUserPath = {};
+        let userByGroupPath = {};
+
+        let userKey = Object.keys(purge)[0];
+        let groupKeys = Object.keys((purge[userKey]['groups']));
+
+        userPath['/user/' + userKey] = purge[userKey];
+        groupKeys.forEach((groupKey:string) => {
+            groupByUserPath['/group-by-user/' + userKey ] = {[groupKey]: true};
+            userByGroupPath['/user-by-group/' + groupKey ] = {[userKey]: true}
+        })
+
+        let userPathKey = Object.keys(userPath)[0];;
+        let groupByUserPathKey = Object.keys(groupByUserPath)[0];;
+        let userByGroupPathKey = Object.keys(userByGroupPath)[0];
+
+        let uP = userPath[userPathKey];
+        let guP = groupByUserPath[groupByUserPathKey];
+        let ugP = userByGroupPath[userByGroupPathKey]
+        path = {
+            [userPathKey]: uP,
+            [groupByUserPathKey]: guP,
+            [userByGroupPathKey]: ugP,
+            };
+        return path;
+    }
+
+    /**
+     * 
+     * @param {{}} purge 
+     * @returns {{}} 
+     * 
+     * @memberOf UserRepository
+     */
     createPath(purge: {}): {} {
       debugger;
         let path = {};
@@ -22,12 +89,12 @@ export class UserRepository extends AbstractRepository < UserEntity > {
         let userByGroupPath = {};
 
         let userKey = Object.keys(purge)[0];
-        let groupKeys = <Array<{}>>(purge[userKey]['groups']);
+        let groupKeys = Object.keys((purge[userKey]['groups']));
 
         userPath['/user/' + userKey] = purge[userKey];
         groupKeys.forEach((groupKey:string) => {
-            groupByUserPath['/group-by-user/' + userKey + "/" + groupKey] = true;
-            userByGroupPath['/user-by-group/' + groupKey  + "/" + userKey] = true
+            groupByUserPath['/group-by-user/' + userKey +"/"+ groupKey] = true;
+            userByGroupPath['/user-by-group/' + groupKey] = {[userKey]: true}
         })
 
         let userPathKey = Object.keys(userPath)[0];;
@@ -64,8 +131,12 @@ export class UserRepository extends AbstractRepository < UserEntity > {
         if(user.dob){base[user.key]['dob'] = user.dob;}
         if(user.email){base[user.key]['email'] = user.email;}
         if(user.displayPhoto){base[user.key]['displayPhoto'] = user.displayPhoto}
-        if(user.groups){base[user.key]['groups'] = user.groups}
-        //base[user.key]['gro'] = {}
+        if(user.groups){
+            base[user.key]['groups'] = {};
+            user.groups.forEach(key => {
+                base[user.key]['groups'][key] = true;
+            })
         return base;
     }
+}
 }

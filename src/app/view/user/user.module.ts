@@ -1,3 +1,6 @@
+import { MasterDetailComponent } from './subcomponent/master-detail/master-detail.component';
+import { UpdateUserModule } from './submodule/update-user/update-user.module';
+import { CreateUserModule } from './submodule/create-user/create-user.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroupService } from '../../api/dynamic-library/application-logic/group/service/group.service';
 import { GroupRepository } from '../../api/dynamic-library/application-logic/group/repository/group.repository';
@@ -6,7 +9,6 @@ import { ModalTemplateModule } from '../../components/template/modal/modal.templ
 import { SearchBarTemplateModule } from '../../components/template/search-bar/concrete/search-bar.template.module';
 import { MasterDetailTemplateModule } from '../../components/template/master-detail/master-detail.module';
 import { SimpleListTemplateModule } from '../../components/template/list/simple-list/simple-list.module';
-import { UserLocalService } from './_local/user-local.service';
 import { UserService } from '../../api/dynamic-library/application-logic/user/service/user.service';
 import { UserRepository } from '../../api/dynamic-library/application-logic/user/repository/user.repository';
 import { NgModule } from '@angular/core';
@@ -23,16 +25,18 @@ import {SimpleModalTemplateModule} from 'app/components/template/modal/simple-mo
     ClarityModule.forChild(),
     NglModule,
     FormsModule,
+    CreateUserModule,
     ReactiveFormsModule,
     SimpleListTemplateModule,
     MasterDetailTemplateModule,
     SearchBarTemplateModule,
     ModalTemplateModule,
     SingleActionListModule,
-    SimpleModalTemplateModule,
+    SimpleModalTemplateModule, 
+    UpdateUserModule,
     UserRoutingModule
   ],
-  declarations: [UserComponent],
-  providers: [UserLocalService, UserRepository, UserService, GroupRepository, GroupService]
+  declarations: [UserComponent, MasterDetailComponent],
+  providers: [UserRepository, UserService, GroupRepository, GroupService]
 })
 export class UserModule { }
