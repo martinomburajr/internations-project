@@ -14,20 +14,20 @@ import {Injectable} from '@angular/core';
 export abstract class AbstractRepository < T extends IEntity >
 // implements IRepository<T>
 {
-    
+
         protected entity: T;
-    
+
         constructor(public afDB: AngularFireDatabase, public afAuth: AngularFireAuth) {
-            
+
         }
-        
+
        /**
          * Stores an element in the database, using multipath updates
          *
          * @param {{}} t
          * @memberof IRepository
          */
-        create(paths: {}):Observable<firebase.Promise<void>> {    
+        create(paths: {}):Observable<firebase.Promise<void>> {
             return Observable.of(this.afDB.object('/').update(paths));
         }
 
@@ -35,15 +35,15 @@ export abstract class AbstractRepository < T extends IEntity >
         /**
          * IMPORTANT
          * Creates an object that represents the nodes for the data to be persisted. This method also can be used to create paths for data to be updated.
-         * 
+         *
          * @abstract
-         * @returns {{}} 
-         * 
+         * @returns {{}}
+         *
          * @memberOf AbstractRepository
          */
-        abstract createPath(purge: {}): {} 
-    
-        
+        abstract createPath(purge: {}): {}
+
+
         /**
          * Cleans an entity into an object appropriate for database storage
          *
@@ -52,8 +52,8 @@ export abstract class AbstractRepository < T extends IEntity >
          * @memberof IRepository
          */
         abstract purge(t: AbstractEntity): {}
-    
-    
+
+
             /**
      * updates an object from the database without using multipath updates
      *
@@ -62,10 +62,22 @@ export abstract class AbstractRepository < T extends IEntity >
      * @memberof IRepository
      */
     update(paths: {}):Observable<firebase.Promise<void>> {
+      debugger;
         return Observable.of(this.afDB.object('/').update(paths));
     }
 
-
+    /**
+     * Provides a specified path to be updated with a given value;
+     *
+     * @param {string} path
+     * @param {string} value
+     * @returns
+     * @memberof AbstractRepository
+     */
+    updateSpecifiedPath(path: string, value: string): Observable<firebase.Promise<void>> {
+      const obj = {[path]: [value]};
+      return Observable.of(this.afDB.object('/').update(obj));
+    }
     /**
      * Removes an object from the database using multipath updates
      *
@@ -78,15 +90,15 @@ export abstract class AbstractRepository < T extends IEntity >
         keys.forEach(key => {
             paths[key] = null;
         })
-        
+
         return Observable.of(this.afDB.object('/').update(paths));
     }
-    
+
 
         public retrieveKeysFromJoinTable(fullPath: string): FirebaseObjectObservable<{}> {
             return this.afDB.object(fullPath)
         }
-    
+
         /**
          * Returns an object from the database using the key as a reference
          *
@@ -97,7 +109,7 @@ export abstract class AbstractRepository < T extends IEntity >
         retrieveByKey(key: string): FirebaseObjectObservable<{}> {
             return this.afDB.object( this.entity.DB_BASE + DB_DASH + key);;
         }
-    
+
         /**
          * Returns multople objects based on the supplied array of keys
          *
@@ -107,7 +119,7 @@ export abstract class AbstractRepository < T extends IEntity >
         retrieveByKeys(keys: Array<string>): Array<FirebaseObjectObservable<{}>> {
             return keys.map(key => this.afDB.object(this.entity.DB_BASE + DB_DASH + key))
         }
-    
+
         /**
          * Returns multiple objects based on the supplied array of keys. These are then queried to see if they satisfy the query
          *
@@ -123,7 +135,7 @@ export abstract class AbstractRepository < T extends IEntity >
                 }
             }))
         }
-    
+
         /**
          * Returns the keys of the objects created by the user
          *
@@ -138,23 +150,23 @@ export abstract class AbstractRepository < T extends IEntity >
                 });
             }).concatMap(x=>x)
         }
-    
+
         /**
          * Returns an observable containing an array of the items searched for. Bear in mind that it uses flatMap instead of concatMap and therefore order is not guaranteed
-         * 
-         * @param {Array<string>} keys 
-         * @returns {Observable<{}[]>} 
-         * 
+         *
+         * @param {Array<string>} keys
+         * @returns {Observable<{}[]>}
+         *
          * @memberOf AbstractOmniRepository
          */
         retrieveByKeysAsArray(keys: Array<string>): Observable<{}[]> {
             let object$s = keys.map(key => {
                 return this.afDB.object(this.entity.DB_BASE + DB_DASH + key)
             });
-    
+
             return Observable.from(object$s).mergeMap(x=>x).scan((acc,val) => acc.concat(val), new Array<{}>())
         }
-    
+
         /**
          * Returns all the elements within the database
          *
@@ -175,7 +187,7 @@ export abstract class AbstractRepository < T extends IEntity >
         retrieveAllGenericWithQuery(query: FirebaseListFactoryOpts): FirebaseListObservable<{}[]> {
             return this.afDB.list(this.entity.DB_BASE, query);
         }
-    
+
         /**
          * Temporarily disables a user by archiving their account
          *
@@ -186,5 +198,5 @@ export abstract class AbstractRepository < T extends IEntity >
         archive(key: string): firebase.Promise<void> {
             return this.afDB.object(this.entity.DB_BASE + DB_DASH + key + DB_DASH + 'isArchived').set(true)
         }
-    
+
 }

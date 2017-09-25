@@ -15,6 +15,7 @@ export class UserRepository extends AbstractRepository < UserEntity > {
     }
 
     createPath(purge: {}): {} {
+      debugger;
         let path = {};
         let userPath = {};
         let groupByUserPath = {};
@@ -23,12 +24,12 @@ export class UserRepository extends AbstractRepository < UserEntity > {
         let userKey = Object.keys(purge)[0];
         let groupKeys = <Array<{}>>(purge[userKey]['groups']);
 
-        userPath['/user/' + userKey] = purge[userKey];     
+        userPath['/user/' + userKey] = purge[userKey];
         groupKeys.forEach((groupKey:string) => {
             groupByUserPath['/group-by-user/' + userKey + "/" + groupKey] = true;
             userByGroupPath['/user-by-group/' + groupKey  + "/" + userKey] = true
         })
-    
+
         let userPathKey = Object.keys(userPath)[0];;
         let groupByUserPathKey = Object.keys(groupByUserPath)[0];;
         let userByGroupPathKey = Object.keys(userByGroupPath)[0];
@@ -38,7 +39,7 @@ export class UserRepository extends AbstractRepository < UserEntity > {
         let ugP = userByGroupPath[userByGroupPathKey]
         path = {
             [userPathKey]: uP,
-            [groupByUserPathKey]: guP, 
+            [groupByUserPathKey]: guP,
             [userByGroupPathKey]: ugP,
             };
         return path;
@@ -50,11 +51,12 @@ export class UserRepository extends AbstractRepository < UserEntity > {
      * @param {{}} t
      * @memberof IRepository
      */
-    create(paths: {}):Observable<firebase.Promise<void>> {    
+    create(paths: {}):Observable<firebase.Promise<void>> {
         return Observable.of(this.afDB.object('/').update(paths));
     }
 
     purge(user: UserEntity): {} {
+      debugger;
         let base = {};
         base[user.key] = {};
         if(user.name){base[user.key]['name'] = user.name;}

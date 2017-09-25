@@ -12,11 +12,11 @@ import {Injectable} from '@angular/core';
 export class AbstractService < T extends IEntity > {
 
         public entity: T;
-    
+
         public constructor(public repository: AbstractRepository<T>) {
-            this.repository = repository;   
+            this.repository = repository;
         }
-    
+
         /**
          * Adds an entity to the database
          *
@@ -33,7 +33,7 @@ export class AbstractService < T extends IEntity > {
             return this.repository.create(path);
         }
 
-    
+
         /**
          * Updates and overwrites an existing path. It wont overwrite existing data, just add to it and overwrite
          *
@@ -46,7 +46,7 @@ export class AbstractService < T extends IEntity > {
             let path = this.repository.createPath(purge);
             return this.repository.update(path);
         }
-    
+
         /**
          * Deletes elements from the database
          *
@@ -59,7 +59,7 @@ export class AbstractService < T extends IEntity > {
             let path = this.repository.createPath(purge);
             return this.repository.delete(path);
         }
-    
+
         /**
          * Allows for the search of an observable
          *
@@ -70,7 +70,7 @@ export class AbstractService < T extends IEntity > {
          * @memberof IService
          */
         search?(objects$: Observable<T[]>, field:string, value: string): Observable<{}>
-    
+
         /**
          * Is meant to convert an incoming object into an entity
          *
@@ -81,7 +81,20 @@ export class AbstractService < T extends IEntity > {
         convert(object: {}): T {
             return null;
         }
-    
+
+
+        /**
+         * Provides a specified path to be updated with a given value;
+         *
+         * @param {string} path
+         * @param {string} value
+         * @returns {Observable<firebase.Promise<void>>}
+         * @memberof AbstractService
+         */
+        updateSpecifiedPath(path:string, value: string): Observable<firebase.Promise<void>> {
+          return this.updateSpecifiedPath(path, value);
+        }
+
         /**
          * Retrieves a single item based on the key
          *
@@ -91,7 +104,7 @@ export class AbstractService < T extends IEntity > {
         retrieveByKey(key: string): FirebaseObjectObservable<{}> {
             return this.repository.retrieveByKey(key)
         }
-    
+
         /**
          * Retrieves a single item and converts it into the entity based on the key
          *
@@ -105,7 +118,7 @@ export class AbstractService < T extends IEntity > {
                     return this.entity.convertObjectToEntity(key, obj)
                 })
         }
-    
+
         /**
          * Retrieves objects from the database based on supplied keys
          *
@@ -128,24 +141,24 @@ export class AbstractService < T extends IEntity > {
                 })
             )
         }
-    
+
         retrieveByKeysAsArray(keys: Array<string>): Observable<{}[]> {
             return this.repository.retrieveByKeysAsArray(keys);
         }
-    
+
         retrieveByKeysAsArrayAsEntity(keys: Array<string>): Observable<T[]> {
             return this.repository.retrieveByKeysAsArray(keys).map((obj:Array<{}>) => obj.map(elem => this.entity.convertObjectToEntity(elem['$key'], elem))
             );
         }
-    
+
         retrieveByKeysWithQuery(keys: Array<string>, field: string, value: string): Observable<{}>[] {
             return this.repository.retrieveByKeysWithQuery(keys, field, value);
         }
-    
+
         retrieveByKeysWithQueryAsEntity(keys: Array<string>, field: string, value: string): Observable<T>[] {
             return this.repository.retrieveByKeysWithQuery(keys, field, value).map(objs => objs.map(obj => this.entity.convertObjectToEntity(obj['$key'], obj)))
         }
-    
+
         /**
          * Retrieves all the elements from the base tree in the database
          *
@@ -154,7 +167,7 @@ export class AbstractService < T extends IEntity > {
         retrieveAllGeneric(): FirebaseListObservable<{}[]> {
             return this.repository.retrieveAllGeneric()
         }
-    
+
         /**
          * Retrieves all the elements from the base tree in the database as entities
          *
@@ -165,7 +178,7 @@ export class AbstractService < T extends IEntity > {
                 return obj.map(elem => this.entity.convertObjectToEntity(elem['$key'], elem))
             });
         }
-    
+
         /**
          * Retrieves all the elements from the base tree in the database with a query
          *
@@ -175,7 +188,7 @@ export class AbstractService < T extends IEntity > {
         retrieveAllGenericWithQuery(query: FirebaseListFactoryOpts): Observable<{}[]> {
             return  this.repository.retrieveAllGenericWithQuery(query);
         }
-    
+
         /**
          * Retrieves all the elements from the base tree in the database with a query and returns it as an entity
          *
@@ -187,7 +200,7 @@ export class AbstractService < T extends IEntity > {
                 return obj.map(elem => this.entity.convertObjectToEntity(elem['$key'], elem))
             });
         }
-    
+
         archive(key: string): firebase.Promise<void> {
             return this.repository.archive(key)
         }
@@ -195,6 +208,6 @@ export class AbstractService < T extends IEntity > {
         retrieveKeysFromDependency(fullPath: string): FirebaseObjectObservable<{}> {
             return this.repository.retrieveKeysFromJoinTable(fullPath);
         }
-     
-    
+
+
 }

@@ -33,9 +33,9 @@ export class UserComponent implements OnInit {
 
   /**
    * Creates an instance of UserComponent.
-   * @param {GroupService} groupService 
-   * @param {UserService} userService 
-   * 
+   * @param {GroupService} groupService
+   * @param {UserService} userService
+   *
    * @memberOf UserComponent
    */
   constructor(private groupService: GroupService, private userService: UserService, private router: Router) {
@@ -45,13 +45,13 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-      
+
   }
 
   /**
    * Places the loaded user entities into a waiting observable within the user local service
-   * 
-   * 
+   *
+   *
    * @memberOf GroupComponent
    */
   loadUsers():void {
@@ -64,11 +64,11 @@ export class UserComponent implements OnInit {
       return users.map((user:UserEntity,index) => {
         let listContainer = new SimpleListContainer();
         if(index == 0) {
-          listContainer = new SimpleListContainer(user.name,user.bio,user.displayPhoto, SimpleListContainer._LIST_ACTIVE);   
+          listContainer = new SimpleListContainer(user.name,user.bio,user.displayPhoto, SimpleListContainer._LIST_ACTIVE);
         }else{
-          listContainer = new SimpleListContainer(user.name,user.bio,user.displayPhoto, SimpleListContainer._LIST);  
+          listContainer = new SimpleListContainer(user.name,user.bio,user.displayPhoto, SimpleListContainer._LIST);
         }
-        return listContainer; 
+        return listContainer;
       })
     })
 
@@ -85,9 +85,9 @@ export class UserComponent implements OnInit {
 
   private newUser: UserEntity = new UserEntity();
   /**
-   * 
+   *
    * Routes to create a user
-   * 
+   *
    * @memberOf GroupComponent
    */
   onCreateUserClick() {
@@ -107,8 +107,8 @@ export class UserComponent implements OnInit {
 
   /**
    * Routes to update a user
-   * 
-   * 
+   *
+   *
    * @memberOf GroupComponent
    */
   onUpdateUserClick() {
@@ -129,12 +129,12 @@ export class UserComponent implements OnInit {
 
   /**
    * Deletes a user and returns an appropriate notification
-   * 
-   * @param {number} index 
-   * 
+   *
+   * @param {number} index
+   *
    * @memberOf UserComponent
    */
-  onDeleteClick(index: number) {   
+  onDeleteClick(index: number) {
     this.showModal = true;
     let container = new SimpleModalContainer();
     container.body = "Are you sure you want to delete the user?";
@@ -143,7 +143,7 @@ export class UserComponent implements OnInit {
     this.modalContainer = container;
 
     console.log("ON DELETE");
-    
+
     this.modalOnOkayClick.subscribe(val => {
       if(val) {
         this.users$.subscribe(users => {
@@ -161,6 +161,18 @@ export class UserComponent implements OnInit {
       }else{
 
       }
+    })
+  }
+
+  onMasterDetailListDeleteClick(index: number) {
+    this.users$.subscribe(users => {
+      debugger;
+      const user = users[this.currentIndex];
+      user.groups.splice(index, 1);
+      this.userService.update(user).subscribe(promise => {
+        promise.then(resolve => console.log("Succesfully updated"));
+        promise.catch(err => console.log(err));
+      });
     })
   }
 
@@ -209,7 +221,7 @@ export class UserComponent implements OnInit {
         return this.groupService.retrieveByKeysAsArrayAsEntity(keys).map(groups => {
           return groups.map(group => new SimpleListContainer(group.name, group.description, group.displayPhoto, SimpleListContainer._LIST))
         });
-        
+
       }).flatMap(x=>x);
 
       masterDetailContainer.mainDescription = user.bio;
@@ -237,7 +249,7 @@ export class UserComponent implements OnInit {
   //     }
   // }
 
-  
+
 
   @ViewChild('select') selectElRef;
   public onNewUserMultiSelectBoxChange(items) {
