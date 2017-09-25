@@ -1,0 +1,99 @@
+<div class="animated fadeIn">
+  <div class="card display-4 w-100 text-center">
+    Group
+    <div class="float-right">
+      <div class="btn btn-secondary" (click)="onCreateGroupClick()">
+        <i class="icon icon-plus fa-2x"></i>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="row">
+      <div class="col-sm-4">
+        <div>
+          <template-search-bar [service]="groupService" action="" debounce="300"></template-search-bar>
+          <template-simple-list 
+          [containers]="(listContainers$ | async)" (onIndexChanged)="onListItemClick($event)">
+        </template-simple-list>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <template-master-detail [container]="(masterDetailContainer$ | async)" ></template-master-detail>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="list-group" data-spy="scroll">
+    <div>
+    <a class="list-group-item list-group-item-action flex-column align-items-start active"
+        style="padding: 0.5rem"
+            (click)="onListItemClick(i)">
+                <div class="d-flex w-100 justify-content-between m-0 container">
+                    <div class="row">
+                        <div class="display-7">
+                            Name
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary justify-content-around float-right border-0 m-0 p-0 col-sm-12" (click)="onLogWorkout(i)">
+                            <i class="fa fa-play-circle fa-lg mt-4 justify-content-around align-middle"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!--UPDATE & DELETE-->
+                <!--<div class="float-right" *ngIf="exercise.Entity.owner == uid">
+                    <span class= "btn-group justify-content-center float-right" role="group"> 
+                        <button class="btn btn-secondary justify-content-center"
+                        style="border-color: #FFF"  
+                            (click)="update(exercise.$key)"
+                            (mousover) = "mouseOverUpdate(i)">
+                            <i class="fa fa-wrench fa-2x mt-4"></i>
+                        </button>
+                        <button class="btn btn-secondary justify-content-center" 
+                        style="border-color: #FFF"
+                            (click) = "delete(exercise.$key)"
+                            (mousover) = "mouseOverDelete(i)">
+                            <i class="icon-close icons font-2xl mt-4"></i>
+                        </button>
+                    </span>
+                </div>-->
+                
+        </a>
+        <a class="list-group-item list-group-item-action flex-column align-items-start"
+        style="padding: 0.5rem"
+            (click)="onListItemClick(i)">
+                <div class="d-flex w-100 justify-content-between m-0 container">
+                    <div class="row">
+                        <div class="display-7">
+                            Name
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary justify-content-around float-right border-0 m-0 p-0 col-sm-12" (click)="onLogWorkout(i)">
+                            <i class="fa fa-play-circle fa-lg mt-4 justify-content-around align-middle"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!--UPDATE & DELETE-->
+                <!--<div class="float-right" *ngIf="exercise.Entity.owner == uid">
+                    <span class= "btn-group justify-content-center float-right" role="group"> 
+                        <button class="btn btn-secondary justify-content-center"
+                        style="border-color: #FFF"  
+                            (click)="update(exercise.$key)"
+                            (mousover) = "mouseOverUpdate(i)">
+                            <i class="fa fa-wrench fa-2x mt-4"></i>
+                        </button>
+                        <button class="btn btn-secondary justify-content-center" 
+                        style="border-color: #FFF"
+                            (click) = "delete(exercise.$key)"
+                            (mousover) = "mouseOverDelete(i)">
+                            <i class="icon-close icons font-2xl mt-4"></i>
+                        </button>
+                    </span>
+                </div>-->
+                
+        </a>
+    </div>

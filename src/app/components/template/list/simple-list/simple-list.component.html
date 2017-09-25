@@ -1,0 +1,18 @@
+<div *ngIf="!containers">
+    <span class="spinner">
+    </span>
+</div>
+<div *ngIf="containers">
+    <div *ngFor="let listItem of containers; let i = index">
+        <a (click)="onListItemClick(i)">
+            <div class="d-flex w-100 justify-content-between">
+                <!-- <img src="" class="img-avatar" height="100px" width="100px">  -->
+                <!-- Main -->
+                <h5 class="mb-1">{{listItem.primaryText}}</h5>
+                <!-- Side -->
+                <small>{{listItem.sideText}}</small> 
+            </div>
+        </a>
+    </div>
+</div>
+

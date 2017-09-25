@@ -1,0 +1,23 @@
+<header class="header-6">
+    <div class="branding">
+        <a href="https://martinomburajr.com/" class="nav-link">
+            <span class="title">Martin Ombura Jr.</span>
+        </a>
+    </div>
+    <div class="header-nav">
+        <a class="active nav-link nav-text" routerLinkActive="active" [routerLink]="['/groups']"> Groups</a>
+        <a class="nav-link nav-text" routerLinkActive="active" [routerLink]="['/users']"> Users </a>
+    </div>
+    <!-- <div class="header-actions">
+        <a href="..." class="nav-link nav-icon">
+            <clr-icon shape="cog"></clr-icon>
+        </a>
+    </div> -->
+</header>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div><!-- /.conainer-fluid -->
+  </main>

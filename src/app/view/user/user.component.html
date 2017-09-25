@@ -1,0 +1,259 @@
+<div class="animated fadeIn">
+    <div class="card display-4 w-100 text-center pt-3 pb-3">
+        Users
+        <div class="float-right">
+        <div class="btn btn-secondary" (click)="onCreateUserClick()">
+            <i class="icon icon-plus fa-2x"></i>
+        </div>
+        </div>
+    </div>
+
+    <div class="card-full">
+        <div class="row">
+            <div class="col-sm-4">
+                <template-search-bar [service]="userService" [action]="onSearchSelect" debounce="300" class="w-100"></template-search-bar>
+
+                <!-- LIST -->
+                <div>
+                    <div class="list-group row" data-spy="scroll" *ngFor="let listItem of (listContainers$ | async); let i = index">
+                        <div class="row">
+                        <a class="list-group-item list-group-item-action flex-column align-items-start col-10"
+                        style="padding: 0.5rem"
+                            (click)="onListItemClick(i)">
+                                <div class="d-flex w-100 justify-content-between m-0 container">
+                                    <div class="row">
+                                        <div class="img-avatar">
+                                            <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
+                                        </div>
+                                        <h4 class="display-7">
+                                            {{listItem.primaryText}}
+                                        </h4>
+                                        <div class="align-text-bottom">
+                                            <p>{{listItem.sideText}}</p>
+                                            </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onDeleteClick(i)">
+                                    <i class="fa fa-trash-o fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    </div>  
+                </div>
+            <div class="col-sm-8">
+                <!-- <template-master-detail [container]="(masterDetailContainer$ | async)" ></template-master-detail> -->
+
+                <!-- MASTER DETAIL -->
+
+                <div class="animated fadeIn card">
+                        <!-- <div *ngIf="!container">
+                            <span class="spinner">
+                            </span>
+                        </div> -->
+                <div>
+                    <div class="card-block mce-scroll" style="padding: 0.55rem" data-spy="scroll">
+                        <span class="row">
+                            <img class="img-avatar col-sm-2" src="(masterDetailContainer$ | async)?.image">
+                            <div class="col-sm-8">
+                                <h6 class="display-4 justify-content-center">{{(masterDetailContainer$ | async)?.title}}</h6>  
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="btn btn-warning" (click)="onUpdateClick()">
+                                    <i class="fa fa-wrench fa-2x"></i>
+                                </div>
+                            </div>
+                        </span>     
+                        <ul class="list-group list-group-flush">                
+                            <li class="list-group-item">        
+                                <p class="card-text">
+                                    {{(masterDetailContainer$ | async)?.mainDescription}}      
+                                </p>
+                            </li>
+                            <li class="list-group-item">        
+                                    <p class="card-text">
+                                        {{(masterDetailContainer$ | async)?.subDescription}}      
+                                    </p>
+                                </li>
+                        </ul>
+            
+                        <h2 class="text-center">{{(masterDetailContainer$ | async)?.listTitle}}</h2>
+                        <!-- <template-single-action-list [containers]="(container.list$ | async)"></template-single-action-list> -->
+
+                        <!-- LIST -->
+                        <div>
+                    <div class="list-group row" data-spy="scroll" *ngFor="let listItem of ((masterDetailContainer$ | async)?.list$ | async); let i = index">
+                        <div class="row">
+                        <a class="list-group-item list-group-item-action flex-column align-items-start col-10"
+                        style="padding: 0.5rem"
+                            (click)="onListItemClick(i)">
+                                <div class="d-flex w-100 justify-content-between m-0 container">
+                                    <div class="row">
+                                        <div class="img-avatar">
+                                            <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
+                                        </div>
+                                        <h4 class="display-7">
+                                            {{listItem.primaryText}}
+                                        </h4>
+                                        <div class="align-text-bottom">
+                                            <p>{{listItem.sideText}}</p>
+                                            </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onDeleteClick(i)">
+                                    <i class="fa fa-trash-o fa-2x"></i>
+                            </div>
+                            </div>
+                    </div>
+                    </div>  
+                    </div>
+                    </div>
+                        <div class="card-footer">
+                                {{(masterDetailContainer$ | async)?.footer}}
+                        </div>
+                    </div>  
+                </div>  
+            </div>                  
+    </div>
+</div>
+
+    
+<simple-modal-template [isOpen] = "showModal" [container]="modalContainer" [size]="'xl'" (cancelClicked)="onCancelClick($event)"(okClicked)="onOkClick($event)"></simple-modal-template>
+
+
+<clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardClosable]="true">
+        <clr-wizard-title>Create a User</clr-wizard-title>
+    
+        <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+        <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+        <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+        <clr-wizard-button [type]="'finish'" (click)="onCreateUser()">Finish</clr-wizard-button>
+    
+        <clr-wizard-page>
+            <ng-template clrPageTitle>Basics</ng-template>
+            <form>
+                <section class="form-block">
+                    <div class="form-group row">
+                        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                            <label for="gForm_1">Name: </label>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <input class="form-control" name="name" type="text" id="form_name" placeholder="Enter value here" size="45" [(ngModel)]="newUser.name">
+                        </div>
+                        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                                <label for="gForm_1">Email</label>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <input class="form-control" name="email" type="email" id="form_email" placeholder="Enter name here" size="45" [(ngModel)]="newUser.email">
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </clr-wizard-page>
+    
+        <clr-wizard-page>
+            <ng-template clrPageTitle>Bio Page</ng-template>
+            <form>
+                <section class="form-block">
+                    <div class="form-group row">
+                        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+                            <textarea id="form_bio" name="bio" rows="5" class="form-control" [(ngModel)]="newUser.bio"></textarea>
+                        </div>
+                    </div>  
+                </section>
+            </form>
+        </clr-wizard-page>
+
+        <clr-wizard-page>
+                <ng-template clrPageTitle>Select Group</ng-template>
+                <form>
+                    <section class="form-block">
+                        <div class="form-group row">
+                            <div class="form-group row">
+                                <label>Current Groups</label>
+                                <ul class="list-group row" data-spy="scroll" *ngFor="let listItem of newUser.groups; let i = index">
+                                    <li class="list-group-item list-group-item-action flex-column align-items-start col-10">
+                                        {{listItem}}
+                                    </li>
+                                </ul>   
+                            </div>
+                            <div class="form-group row">
+                                <select #select name="groups" (change)="onNewUserMultiSelectBoxChange($event.target.options)" multiple>
+                                    <option [value]="group.key" *ngFor="let group of (groups$ | async)" name ="group" [(ngModel)]="updateUser.groups">{{group.name}}</option>
+                                </select>      
+                            </div>      
+                        </div>  
+                        <p style="font-size: 0.8rem">Press Ctrl/Cmd and select multiple</p>
+                    </section>
+                </form>
+            </clr-wizard-page>
+</clr-wizard>
+
+<clr-wizard #wizardUpdate [(clrWizardOpen)]="wizardUpdateOpen" [clrWizardClosable]="true">
+    <clr-wizard-title>Update {{updateUser?.name}}</clr-wizard-title>
+
+    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'" (click)="updateUserClick()">Finish</clr-wizard-button>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Basics</ng-template>
+        <form>
+            <section class="form-block">
+                <div class="form-group row">
+                    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                        <label for="gForm_1">Name: </label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <input class="form-control" name="name" type="text" id="form_name" placeholder="Enter value here" size="45" [(ngModel)]="updateUser.name">
+                    </div>
+                    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                            <label for="gForm_1">Email</label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <input class="form-control" name="email" type="email" id="form_email" placeholder="Enter name here" size="45" [(ngModel)]="updateUser.email">
+                    </div>
+                </div>
+            </section>
+        </form>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Bio Page</ng-template>
+        <form>
+            <section class="form-block">
+                <div class="form-group row">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+                        <textarea id="form_bio" name="bio" rows="5" class="form-control" [(ngModel)]="updateUser.bio"></textarea>
+                    </div>
+                </div>  
+            </section>
+        </form>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+            <ng-template clrPageTitle>Select Group</ng-template>
+            <form>
+                <section class="form-block">
+                    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                            <label for="gForm_1">Current Groups</label>
+                    </div>
+                    <div class="form-group row">
+                        <ul class="list-group row" data-spy="scroll" >
+                            <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let listItem of updateUser.groups; let i = index">
+                                {{listItem}}
+                            </li>
+                        </ul>   
+                    </div>
+                    <div class="form-group row">
+                        <select name="groups" (change)="onMultiSelectBoxChange($event.target)" multiple>
+                            <option [value]="group.key" *ngFor="let group of (groups$ | async)" name ="group" [(ngModel)]="updateUser.groups">{{group.name}}</option>
+                        </select>      
+                    </div>  
+                    <p style="font-size: 0.8rem">Press Ctrl/Cmd and select multiple</p>
+                </section>
+            </form>
+    </clr-wizard-page>
+</clr-wizard>

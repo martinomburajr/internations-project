@@ -1,0 +1,13 @@
+<clr-modal [(clrModalOpen)]="isOpen" [clrModalSize]="size">
+    <h3 class="modal-title">{{container.title}}</h3>
+    <div class="img-avatar">
+        <img src={{container.image}}>
+    </div>
+    <div class="modal-body">
+        <p>{{container.body}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="onCancelClick()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onOkClick()">Ok</button>
+    </div>
+</clr-modal>

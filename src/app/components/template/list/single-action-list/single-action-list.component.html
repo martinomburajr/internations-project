@@ -1,0 +1,26 @@
+<div >
+  <div class="list-group row" data-spy="scroll" *ngFor="let listItem of containers; let i = index">
+      <div class="row">
+      <a class="list-group-item list-group-item-action flex-column align-items-start col-10"
+      style="padding: 0.5rem"
+          (click)="onListItemClick(i)">
+              <div class="d-flex w-100 justify-content-between m-0 container">
+                  <div class="row">
+                      <div class="img-avatar">
+                        <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
+                      </div>
+                      <h4 class="display-7">
+                          {{listItem.primaryText}}
+                      </h4>
+                      <div class="align-text-bottom">
+                          <p>{{listItem.sideText}}</p>
+                        </div>
+                  </div>
+              </div>
+        </a>
+          <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onPrimaryAction()">
+                <i class="fa fa-trash-o fa-2x"></i>
+          </div>
+        </div>
+  </div>
+</div>  

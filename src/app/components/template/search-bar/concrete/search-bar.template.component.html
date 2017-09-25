@@ -1,0 +1,11 @@
+<div class="mb-1">
+    <ngl-lookup (pickChange)="onSelectTypeAhead($event,action)" [(value)]="value" [lookup]="search" field="name" [(pick)]="selected" noResultsText= {{noResultsText}} debounce= {{debounce}} [placeholder]="'Search'">
+      <div nglLookupHeader class="slds-text-body--small">Most relevant </div>
+      <template nglLookupItem let-ctx>
+          <div class="slds-media__body">
+          <div class="slds-lookup__result-text">{{ctx.name}}</div>
+          <span class="slds-lookup__result-meta slds-text-body--small">{{ctx.description}}</span>
+          </div>
+      </template>
+    </ngl-lookup>
+</div>

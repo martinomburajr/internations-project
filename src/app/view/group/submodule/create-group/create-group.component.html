@@ -1,0 +1,25 @@
+<clr-wizard #wizardxl [(clrWizardOpen)]="true">
+    <clr-wizard-title>Create a Group</clr-wizard-title>
+
+    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'" (click)="onFinishClick()">Finish</clr-wizard-button>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Basics</ng-template>
+        <input name="name" placeholder="Group's Name" [(ngModel)] = "entity.name">
+        <input name="name" placeholder="Group's Description" [(ngModel)] = "entity.description">
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Add Users to Group</ng-template>
+        <template-search-bar [service]="userService" action=""></template-search-bar>
+        <template-simple-list [containers]="(users$ | async)" action="" (onIndexChange)=""></template-simple-list>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Page 3</ng-template>
+        ...
+        </clr-wizard-page>
+</clr-wizard>

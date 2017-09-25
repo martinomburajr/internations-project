@@ -1,29 +1,35 @@
+import { LayoutComponent } from './view/layout/layout.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-// Layouts
-import { FullLayoutComponent } from './layouts/full-layout.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'groups',
     pathMatch: 'full',
   },
   {
     path: '',
-    component: FullLayoutComponent,
+    component: LayoutComponent,
     data: {
       title: 'Home'
     },
     children: [
       {
-        path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule'
+        path: 'groups',
+        loadChildren: './view/group/group.module#GroupModule'
       },
       {
-        path: 'episode1',
-        loadChildren: './episodes/episode1/episode1.module#Episode1Module'
+        path: 'groups/create-group',
+        loadChildren: './view/group/submodule/create-group/create-group.module#CreateGroupModule'
+      },
+      {
+        path: 'groups/update-group',
+        loadChildren: './view/group/submodule/update-group/update-group.module#UpdateGroupModule'
+      },
+      {
+        path: 'users',
+        loadChildren: './view/user/user.module#UserModule'
       },
     ]
   }

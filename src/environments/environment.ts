@@ -6,11 +6,11 @@
 export const environment = {
   production: false,
   firebase: {
-      apiKey: "AIzaSyDlDQPIdcQUAbcasLXp07C6x5XJEZFVe0k",
-      authDomain: "medium-rxjs.firebaseapp.com",
-      databaseURL: "https://medium-rxjs.firebaseio.com",
-      projectId: "medium-rxjs",
-      storageBucket: "medium-rxjs.appspot.com",
-      messagingSenderId: "256449444434"
+    apiKey: "AIzaSyDmG6NVJlAzS6kS5iVBLOycs5YZfhylXek",
+    authDomain: "internations-project.firebaseapp.com",
+    databaseURL: "https://internations-project.firebaseio.com",
+    projectId: "internations-project",
+    storageBucket: "internations-project.appspot.com",
+    messagingSenderId: "697419791346"
     }
 };
