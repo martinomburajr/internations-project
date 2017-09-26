@@ -14,7 +14,6 @@ import {AbstractEntity} from "app/api/dynamic-library/core-logic/entity/abstract
 export interface IGroupEntity {
     name: string;
     description: string;
-    users: Array<string>; 
 }
 
 /**
@@ -28,8 +27,8 @@ export interface IGroupEntity {
 export class GroupEntity extends AbstractEntity implements IGroupEntity {
     name: string;
     description: string;
-    users: Array<string>;
     displayPhoto: string;
+    createdDate: number;
     DB_BASE = "/group";
     DB_BASE_BY_USER = "/group-by-user";
     constructor() {
@@ -37,7 +36,7 @@ export class GroupEntity extends AbstractEntity implements IGroupEntity {
         this.name = '';
         this.displayPhoto = '';
         this.description = '';
-        this.users = new Array<string>();
+        this.createdDate = Date.now();
     }
 
     convertObjectToEntity(key: string, obj: {}): GroupEntity {
@@ -45,13 +44,17 @@ export class GroupEntity extends AbstractEntity implements IGroupEntity {
         groupEntity.key = key;
         if(obj['name']){groupEntity.name = obj['name']}
         if(obj['displayPhoto']){groupEntity.displayPhoto = obj['displayPhoto']}
+        if(obj['createdDate']){groupEntity.createdDate = obj['createdDate']}
         groupEntity.description = obj['description'];
-        if(obj['users']){
-            let userObjects = <Array<{}>>(obj['users']);
-            let keys = Object.keys(userObjects);
-            groupEntity.users = keys;
-        }
-
         return groupEntity;
+    }
+
+    purge(): {} {
+        let base = {};
+        base[this.key] = {};
+        base[this.key]['name'] = this.name;
+        base[this.key]['description'] = this.description;
+        base[this.key]['createdDate'] = this.createdDate;
+        return base;
     }
 }

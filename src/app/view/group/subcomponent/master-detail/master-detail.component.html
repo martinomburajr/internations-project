@@ -1,0 +1,66 @@
+<div class="animated fadeIn card">
+    <div>
+        <div class="card-block mce-scroll" style="padding: 0.55rem" data-spy="scroll">
+            <span class="row m-0">
+                <img class="img-avatar col-sm-2" src={{masterDetailGroupData.group.image}}>
+                <div class="col-sm-8">
+                    <h6 class="display-4 justify-content-center">{{masterDetailGroupData.group.name}}</h6>
+                </div>
+                <div class="col-sm-2 p-0">
+                    <div class="btn btn-danger p-0" (click)="onUpdateClick()">
+                        <i class="fa fa-wrench fa-2x"></i>
+                        Edit
+                    </div>
+                </div>
+            </span>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <p class="card-text">
+                        {{masterDetailGroupData.group.description}}
+                    </p>
+                </li>
+                <li class="list-group-item">
+                        <p class="card-text">
+                            <!-- {{masterDetailGroupData.group.email}} -->
+                        </p>
+                    </li>
+            </ul>
+  
+            <h2 class="text-center">Users</h2>
+            <!-- <template-single-action-list [containers]="(container.list$ | async)"></template-single-action-list> -->
+  
+            <!-- LIST -->
+            <div>
+        <div class="list-group row m-0" data-spy="scroll" *ngFor="let listItem of masterDetailGroupData._users; let j = index">
+            <div class="row m-0">
+            <a class="list-group-item list-group-item-action flex-column col-10"
+            style="padding: 0.5rem"
+                (click)="onMasterDetailListItemClick(listItem)">
+                    <div class="d-flex m-0 container">
+                        <div class="row m-0">
+                            <div class="img-avatar">
+                                <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
+                            </div>
+                            <h5>
+                                {{listItem.name}}
+                            </h5>
+                        </div>
+                        <div class="align-text-bottom">
+                            <p>{{listItem.bio}}</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onMasterDetailListDeleteClick(j)">
+                        <i class="fa fa-trash-o fa-2x"></i>
+                </div>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+      <div class="card-footer">
+          <!-- Date of Birth: {{masterDetailGroupData.group.dob | date}} -->
+      </div>
+  </div>
+  
+  <simple-modal-template [isOpen] = "modalShow" [container]="deleteGroupUserContainer" [size]="'lg'" (modalClickResult)="onModalClickResult($event)"></simple-modal-template>

@@ -1,49 +1,22 @@
 <div class="animated fadeIn">
     <div class="card display-4 w-100 text-center pt-3 pb-3">
         Users
-        <div class="float-right">
-        <div class="btn btn-secondary" (click)="onCreateUserClick()">
-            <i class="icon icon-plus fa-2x"></i>
+        <div class="float-right mr-2">
+        <div class="btn btn-lg btn-success" (click)="onCreateUserClick()">
+            <i class="icon icon-plus fa-4x"></i>
         </div>
         </div>
     </div>
 
     <div class="card-full">
-        <div class="row">
+        <div class="row m-0">
             <div class="col-sm-4">
-                <template-search-bar [service]="userService" [action]="onSearchSelect" debounce="300" class="w-100"></template-search-bar>
-
+                <!-- SEARCH BAR -->
+                <template-search-bar [service]="userService" [action]="onSearchSelect" debounce="300"></template-search-bar>
                 <!-- LIST -->
-                <div>
-                    <div class="list-group row" data-spy="scroll" *ngFor="let listItem of (listContainers$ | async); let i = index">
-                        <div class="row">
-                        <a class="list-group-item list-group-item-action flex-column align-items-start col-10"
-                        style="padding: 0.5rem"
-                            (click)="onListItemClick(i)">
-                                <div class="d-flex w-100 justify-content-between m-0 container">
-                                    <div class="row">
-                                        <div class="img-avatar">
-                                            <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
-                                        </div>
-                                        <h4 class="display-7">
-                                            {{listItem.primaryText}}
-                                        </h4>
-                                        <div class="align-text-bottom">
-                                            <p>{{listItem.sideText}}</p>
-                                            </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onDeleteUser(i)">
-                                    <i class="fa fa-trash-o fa-2x"></i>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+                <template-user-list [users$] = "users$" (onCurrentIndexChange$)= "onCurrentIndexChange($event)"></template-user-list>
+            </div>      
             <div class="col-sm-8">
-                <!-- <template-master-detail [container]="(masterDetailContainer$ | async)" ></template-master-detail> -->
-
                 <!-- MASTER DETAIL -->
                 <template-user-master-detail [currentIndex$]="currentIndex$" [users$]="users$" (onUpdateClicked)="onUpdateClick($event)"></template-user-master-detail>
             </div>
@@ -51,10 +24,7 @@
     </div>
 </div>
 
-
-<simple-modal-template [isOpen] = "showModal" [container]="modalContainer" [size]="'xl'" (cancelClicked)="onCancelClick($event)"(okClicked)="onOkClick($event)"></simple-modal-template>
-
 <template-create-user [wizardCreateOpen] = "wizardCreateOpen"></template-create-user>
 
-<template-update-user [wizardUpdateOpen] = "wizardUpdateOpen" [currentIndex$]="currentIndex$" (wizardState)="updateWizardState($event)"></template-update-user>
+<template-update-user [users$] = "users$" [groups$] = "groups$" [wizardUpdateOpen] = "wizardUpdateOpen" [currentIndex$]="currentIndex$" (wizardState)="updateWizardState($event)"></template-update-user>
 

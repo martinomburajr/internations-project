@@ -82,7 +82,6 @@ export class UserRepository extends AbstractRepository < UserEntity > {
      * @memberOf UserRepository
      */
     createPath(purge: {}): {} {
-      debugger;
         let path = {};
         let userPath = {};
         let groupByUserPath = {};
@@ -123,20 +122,13 @@ export class UserRepository extends AbstractRepository < UserEntity > {
     }
 
     purge(user: UserEntity): {} {
-      debugger;
         let base = {};
         base[user.key] = {};
         if(user.name){base[user.key]['name'] = user.name;}
         if(user.bio){base[user.key]['bio'] = user.bio;}
-        if(user.dob){base[user.key]['dob'] = user.dob;}
+        // if(user.){base[user.key]['dob'] = user.dob;}
         if(user.email){base[user.key]['email'] = user.email;}
         if(user.displayPhoto){base[user.key]['displayPhoto'] = user.displayPhoto}
-        if(user.groups){
-            base[user.key]['groups'] = {};
-            user.groups.forEach(key => {
-                base[user.key]['groups'][key] = true;
-            })
         return base;
     }
-}
 }

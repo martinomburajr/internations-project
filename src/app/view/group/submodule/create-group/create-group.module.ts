@@ -7,7 +7,6 @@ import { UserRepository } from '../../../../api/dynamic-library/application-logi
 import {NgModule} from '@angular/core';
 import {ClarityModule} from 'clarity-angular';
 import {NglModule} from 'ng-lightning';
-import {CreateGroupRoutingModule} from 'app/view/group/submodule/create-group/create-group.routing';
 import {CreateGroupComponent} from 'app/view/group/submodule/create-group/create-group.component';
 import {GroupRepository} from 'app/api/dynamic-library/application-logic/group/repository/group.repository';
 import {GroupService} from 'app/api/dynamic-library/application-logic/group/service/group.service';
@@ -19,11 +18,7 @@ import {UserService} from 'app/api/dynamic-library/application-logic/user/servic
     FormsModule,
     ClarityModule.forChild(),
     NglModule.forRoot(),
-    ReactiveFormsModule,
-    SearchBarTemplateModule,
-    MasterDetailTemplateModule,
-    SimpleListTemplateModule,
-    CreateGroupRoutingModule,
+    ReactiveFormsModule
   ],
   exports:[CreateGroupComponent],
   declarations: [

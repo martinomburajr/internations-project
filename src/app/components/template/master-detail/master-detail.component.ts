@@ -15,7 +15,7 @@ export class MasterDetailTemplate {
 
   constructor() {
       this.container = new SimpleMasterDetailContainer(); 
-      this.container.list$.subscribe(x=>console.log(x));
+      //this.container.list$.subscribe(x=>console.log(x));
   }
 
   onButtonPress = () => {
@@ -24,7 +24,6 @@ export class MasterDetailTemplate {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes['container']) {
-        console.log("changed");
     }
   }
 

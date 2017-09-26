@@ -1,3 +1,4 @@
+import { ListComponent } from './subcomponent/list/list.component';
 import { MasterDetailComponent } from './subcomponent/master-detail/master-detail.component';
 import { UpdateUserModule } from './submodule/update-user/update-user.module';
 import { CreateUserModule } from './submodule/create-user/create-user.module';
@@ -36,7 +37,7 @@ import {SimpleModalTemplateModule} from 'app/components/template/modal/simple-mo
     UpdateUserModule,
     UserRoutingModule
   ],
-  declarations: [UserComponent, MasterDetailComponent],
+  declarations: [UserComponent, MasterDetailComponent, ListComponent],
   providers: [UserRepository, UserService, GroupRepository, GroupService]
 })
 export class UserModule { }

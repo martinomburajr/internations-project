@@ -66,7 +66,7 @@ export class IGenericTypeInitializer<T>  {
     public entity2: new () => IGenericTypeInitializer<IEntity>
     ctor: IGenericTypeEntityInitializer<T>;  
     constructor() {
-        console.log(this.entity)
+
     }
 
     createInstance<IEntity>(type:{new():IEntity;}): IEntity {

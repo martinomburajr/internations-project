@@ -23,6 +23,11 @@ export class CreateUserComponent implements OnInit {
     groups: new Array<string>(),
     _groups: Array<GroupEntity>()
   }
+  private model = {
+    firstname: "g",
+    lastname: "e",
+    employeeType: ""
+  }
   constructor(private userService: UserService, private groupService: GroupService) { }
 
   ngOnInit() {
@@ -30,29 +35,26 @@ export class CreateUserComponent implements OnInit {
     this.userCreationObject.groups = new Array<string>();
     this.groupService.retrieveAllGenericAsEntity().subscribe(groups => {
       this.userCreationObject._groups = groups;
-      this.wizardCreateOpen = true;
+      this.wizardCreateOpen = false;
     })
   }
 
 
   public onCreateUserMultiSelectBoxChange(items) {
-    console.log(items);
     this.userCreationObject.groups = Array.apply(null,items)  // convert to real Array
     .filter(option => option.selected)
     .map(option => option.value)
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    if(changes['userCreationObject']) {
-      console.log(this.userCreationObject);
-      console.log("changes!");
-    }
-  }
-
+  /**
+   * Creates a user;
+   * 
+   * 
+   * @memberOf CreateUserComponent
+   */
   onCreateUser = () => {
     let path = {};
+    this.userCreationObject.user.createdDate = Date.now();
     let purge = this.userCreationObject.user.purge();
     path['user/' + this.userCreationObject.user.key] = purge[this.userCreationObject.user.key];
     this.userCreationObject.groups.forEach(groupKey => {

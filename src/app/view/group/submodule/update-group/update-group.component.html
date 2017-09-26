@@ -1,25 +1,61 @@
-<clr-wizard #wizardxl [(clrWizardOpen)]="xlOpen">
-    <clr-wizard-title>Create a Group</clr-wizard-title>
-    
-    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
-    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
-    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-    <clr-wizard-button [type]="'finish'" (click)="onFinishClick()">Finish</clr-wizard-button>
-    
-    <clr-wizard-page>
-        <ng-template clrPageTitle>Basics</ng-template>
-        <input name="name" placeholder="Group's Name" [(ngModel)] = "entity.name">
-        <input name="name" placeholder="Group's Description" [(ngModel)] = "entity.description">
-    </clr-wizard-page>
-    
-    <clr-wizard-page>
-        <ng-template clrPageTitle>Add Users to Group</ng-template>
-        <!-- <template-search-bar [service]="userService" action=""></template-search-bar>
-        <template-simple-list [containers]="(users$ | async)" action="" (onIndexChange)=""></template-simple-list> -->
-    </clr-wizard-page>
-    
-    <clr-wizard-page>
-        <ng-template clrPageTitle>Page 3</ng-template>
-        ...
+<clr-wizard #wizardUpdate [(clrWizardOpen)]="wizardUpdateOpen" [clrWizardClosable]="true">
+        <clr-wizard-title>Update {{group?.name}}</clr-wizard-title>
+      
+        <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+        <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+        <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+        <clr-wizard-button [type]="'finish'" (click)="onUpdateGroup()">Finish</clr-wizard-button>
+      
+      
+        <clr-wizard-page>
+            <ng-template clrPageTitle>Basics</ng-template>
+            <form>
+                <section class="form-block">
+                    <div class="form-group row">
+                        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                            <label for="gForm_1">Name: </label>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <input class="form-control" name="name" type="text" id="form_name" placeholder="Enter value here" size="45" [(ngModel)]="groupUpdateObject.group.name">
+                        </div>
+                    </div>
+                </section>
+            </form>
         </clr-wizard-page>
-    </clr-wizard>
+      
+        <clr-wizard-page>
+            <ng-template clrPageTitle>Description Page</ng-template>
+            <form>
+                <section class="form-block">
+                    <div class="form-group row">
+                        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+                            <textarea id="form_bio" name="bio" rows="5" class="form-control" [(ngModel)]="groupUpdateObject.group.description"></textarea>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </clr-wizard-page>
+      
+        <clr-wizard-page>
+                <ng-template clrPageTitle>Select Group</ng-template>
+                <form>
+                    <section class="form-block">
+                        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                                <label for="gForm_1">Current Users</label>
+                        </div>
+                        <div class="form-group row">
+                            <div class="badge badge-blue" *ngFor="let listItem of groupUpdateObject._users">
+                                  {{listItem.name}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <select name="groups" (change)="onUpdateGroupMultiSelectBoxChange($event.target)" multiple>
+                                <option [value]="user.key" *ngFor="let user of (users$ | async)">{{user.name}}</option>
+                            </select>
+                        </div>
+                        <p style="font-size: 0.8rem">Press Ctrl/Cmd and select multiple</p>
+                    </section>
+                </form>
+        </clr-wizard-page>
+      </clr-wizard>
+      

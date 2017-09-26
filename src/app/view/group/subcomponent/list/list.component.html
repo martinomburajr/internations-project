@@ -1,0 +1,28 @@
+<div class="animated fadeIn m-0">
+    <div class="list-group row m-0" data-spy="scroll" *ngFor="let listItem of (groups$ | async); let i = index">
+        <div class="row m-0">
+        <div class="list-group-item list-group-item-action flex-column align-items-start col-sm-10 p-0"
+        style="padding: 0.5rem"
+            (click)="onListItemClick(i)">
+                <div class="d-flex w-100 justify-content-between p-0 m-0 container">
+                    <div class="row m-0">
+                        <div class="img-avatar">
+                            <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
+                        </div>
+                        <h2>
+                            {{listItem.name}}
+                        </h2>
+                        <div class="align-text-bottom">
+                            <p>{{listItem.description}}</p>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            <div class="col-sm-2 list-group-item p-0" (click)="onDeleteGroupClick(i)">
+                <i class="fa fa-trash-o fa-2x text-center"></i>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <simple-modal-template [isOpen] = "showModal" [container]="deleteContainer" [size]="'lg'" (modalClickResult)="onModalClickResult($event)"></simple-modal-template>

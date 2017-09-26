@@ -20,14 +20,6 @@ export const routes: Routes = [
         loadChildren: './view/group/group.module#GroupModule'
       },
       {
-        path: 'groups/create-group',
-        loadChildren: './view/group/submodule/create-group/create-group.module#CreateGroupModule'
-      },
-      {
-        path: 'groups/update-group',
-        loadChildren: './view/group/submodule/update-group/update-group.module#UpdateGroupModule'
-      },
-      {
         path: 'users',
         loadChildren: './view/user/user.module#UserModule'
       },

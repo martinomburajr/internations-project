@@ -10,15 +10,15 @@
       <ng-template clrPageTitle>Basics</ng-template>
       <form>
           <section class="form-block">
-              <div class="form-group row">
+              <div class="form-group row m-0">
                   <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                      <label for="gForm_1">Name: </label>
+                      <label for="gForm_1" class="required">Name: </label>
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                       <input class="form-control" name="name" type="text" id="form_name" placeholder="Enter value here" size="45" [(ngModel)]="userCreationObject.user.name">
                   </div>
                   <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                          <label for="gForm_1">Email</label>
+                     <label for="gForm_1" class="required">Email</label>
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                           <input class="form-control" name="email" type="email" id="form_email" placeholder="Enter name here" size="45" [(ngModel)]="userCreationObject.user.email">
@@ -31,8 +31,11 @@
   <clr-wizard-page>
       <ng-template clrPageTitle>Bio Page</ng-template>
       <form>
-          <section class="form-block">
-              <div class="form-group row">
+          <section class="form-block"> 
+                <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                    <label for="gForm_1" class="required">Bio</label>
+                </div>
+              <div class="form-group row m-0">
                   <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
                       <textarea id="form_bio" name="bio" rows="5" class="form-control" [(ngModel)]="userCreationObject.user.bio"></textarea>
                   </div>
@@ -45,18 +48,16 @@
           <ng-template clrPageTitle>Select Group</ng-template>
           <form>
               <section class="form-block">
-                  <div class="form-group row">
-                      <div class="form-group row">
+                  <div class="form-group row m-0">
+                      <div class="form-group row m-0">
                           <label>Current Groups</label>
-                          <ul class="list-group row" data-spy="scroll" *ngFor="let listItem of userCreationObject._groups; let i = index">
-                              <li class="list-group-item list-group-item-action flex-column align-items-start col-10">
-                                  {{listItem}}
-                              </li>
-                          </ul>
+                          <div class="badge badge-blue" *ngFor="let listItem of userCreationObject._groups">
+                                {{listItem.name}}
+                          </div>
                       </div>
-                      <div class="form-group row">
-                          <select #select name="groups" (change)="onCreateUserMultiSelectBoxChange($event.target.options)" multiple>
-                              <option [value]="group.key" *ngFor="let group of userCreationObject._groups" name ="group" [(ngModel)]="userCreationObject.groups">{{group.name}}</option>
+                      <div class="form-group row m-0">
+                          <select height="200px" name="groups" (change)="onCreateUserMultiSelectBoxChange($event.target.options)" multiple>
+                              <option [value]="group.key" *ngFor="let group of userCreationObject._groups">{{group.name}}</option>
                           </select>
                       </div>
                   </div>

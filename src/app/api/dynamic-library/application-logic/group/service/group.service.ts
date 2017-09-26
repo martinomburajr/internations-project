@@ -7,10 +7,8 @@ import {FirebaseObjectObservable} from 'angularfire2/database';
 
 @Injectable()
 export class GroupService extends AbstractService<GroupEntity> {
-    
     constructor(repository: GroupRepository) {
         super(repository);
-    
         this.entity = new GroupEntity();
     } 
 }

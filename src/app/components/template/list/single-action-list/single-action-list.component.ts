@@ -23,8 +23,7 @@ export class SingleActionListComponent extends SimpleListComponent implements On
   }
 
   onPrimaryAction = () => {
-    //console.log('calling prim')
-    //this.primaryAction();
+
   }
 
 }

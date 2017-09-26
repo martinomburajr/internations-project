@@ -15,13 +15,6 @@ export class GroupRepository extends AbstractRepository < GroupEntity > {
 
     purge(group: GroupEntity): {} {
         let base = {};
-        base[group.key] = {};
-        base[group.key]['name'] = group.name;
-        base[group.key]['description'] = group.description;
-        group.users.forEach(user => {
-            base[group.key]['users'] = {};
-            base[group.key]['users'][user] = true;
-        })
         return base;
     }
 

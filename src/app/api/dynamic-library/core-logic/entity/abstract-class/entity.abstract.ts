@@ -1,9 +1,14 @@
+import { UtilityService } from '../../utility/utils/utility.service';
 import { IEntity } from '../interface/entity.interface';
 
 export abstract class AbstractEntity implements IEntity {
     key: string;
     DB_BASE: string;
     DB_BASE_BY_USER?:string
+
+    constructor() {
+        this.key = UtilityService.generateFirebaseID();
+    }
 
 	/**
      * Converts an existing object into an entity

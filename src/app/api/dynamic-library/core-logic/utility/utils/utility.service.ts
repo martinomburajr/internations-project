@@ -66,7 +66,7 @@ export class UtilityService {
   
     public static gen_n_ids = function(n){
       for(var i = 0; i < n; i++){
-        console.log(this.generateFirebaseID(i));
+
       }
     }
 

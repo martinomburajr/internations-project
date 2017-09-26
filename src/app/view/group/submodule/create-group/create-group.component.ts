@@ -1,61 +1,71 @@
-import { GroupService } from '../../../../api/dynamic-library/application-logic/group/service/group.service';
 import { Observable } from 'rxjs/Rx';
+import { Wizard } from 'clarity-angular';
+import { GroupService } from '../../../../api/dynamic-library/application-logic/group/service/group.service';
+import { UserService } from '../../../../api/dynamic-library/application-logic/user/service/user.service';
 import { UserEntity } from '../../../../api/dynamic-library/application-logic/user/entity/user.entity';
-import { Component, OnInit } from '@angular/core';
-import {GroupEntity} from 'app/api/dynamic-library/application-logic/group/entity/group.entity';
-import {UserService} from 'app/api/dynamic-library/application-logic/user/service/user.service';
+import { GroupEntity } from '../../../../api/dynamic-library/application-logic/group/entity/group.entity';
+import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-create-group',
+  selector: 'template-create-group',
   templateUrl: './create-group.component.html',
   styleUrls: ['./create-group.component.scss']
 })
 export class CreateGroupComponent implements OnInit {
 
-  private entity: GroupEntity;
-  private users$: Observable<UserEntity[]>;
-  constructor(private userService: UserService, private groupService: GroupService) {
-    this.entity = new GroupEntity();
-    this.users$ = new Observable<UserEntity[]>();
-  }
+  @ViewChild("wizard") wizard: Wizard;
+  @Input('wizardCreateOpen')wizardCreateOpen: boolean;
+  @Input()groups$: Observable<GroupEntity[]>;
+  @Input()users$: Observable<UserEntity[]>;
+  private groupCreationObject: {
+    group: GroupEntity,
+    users: Array<string>,
+    _users: Array<UserEntity>
+  } = {
+    group: new GroupEntity(),
+    users: new Array<string>(),
+    _users: new Array<UserEntity>()
+  } 
+  constructor(private userService: UserService, private groupService: GroupService) { }
 
   ngOnInit() {
-    this.users$ = this.userService.retrieveAllGenericAsEntity();
-  }
-
-  onUserSelect(index: number) {
-    this.users$.subscribe(users => {
-      this.entity.users.push(users[index].key);
-    }) 
-  }
-
-  validateNameField():boolean {
-    if(this.entity.name == '') {
-      console.log("name error")
-      return false;
-    }else{
-      return true;
-    }
-  }
-
-  validateDescriptionField():boolean {
-    if(this.entity.description == '') {
-      console.log("name error")
-      return false;
-    }else{
-      return true;
-    }
-  }
-
-  onFinishClick() {
-    this.groupService.create(this.entity).subscribe(x => {
-      x.then(resolve => {
-        console.log(resolve);
-      })
-      x.catch(reject => {
-        console.log(reject);
-      })
+    this.userService.retrieveAllGenericAsEntity().subscribe(users => {
+      this.groupCreationObject._users = users;
+      this.groupCreationObject.users = users.map(user => user.key);
+      this.wizardCreateOpen = false;
     })
   }
 
+  public onCreateGroupMultiSelectBoxChange(items) {
+    this.groupCreationObject.users = Array.apply(null,items)  // convert to real Array
+    .filter(option => option.selected)
+    .map(option => option.value)
+
+    this.users$.subscribe(groups => {
+      this.groupCreationObject._users = this.groupCreationObject.users.map(key => {
+        let foundUser: UserEntity;
+        groups.forEach(group => {
+          if(group.key == key) {
+            foundUser = group;
+          }
+        })
+        return foundUser;
+      })
+      this.groupCreationObject._users
+    })
+  }
+
+  onCreateGroup = () => {
+    let path = {};
+    let purge = this.groupCreationObject.group.purge();
+    path['group/' + this.groupCreationObject.group.key] = purge[this.groupCreationObject.group.key];
+    this.groupCreationObject.users.forEach(userKey => {
+      path['user-by-group/' + this.groupCreationObject.group.key + '/' + userKey] = true;
+      path['group-by-user/' + userKey + '/' + this.groupCreationObject.group.key] = true;
+    })
+    this.groupService.updateSpecifiedPath(path).subscribe(promise => {
+      promise.then(resolve => console.log("Succesfully deleted"));
+      promise.catch(err => (err));
+    });
+  }
 }

@@ -11,18 +11,15 @@ export class SimpleModalTemplateComponent implements OnInit {
   @Input() size: string;
   @Input() isOpen: boolean;
   @Input() container: SimpleModalContainer;
-  @Output() okClicked: EventEmitter<boolean>;
-  @Output() cancelClicked: EventEmitter<boolean>;
+  @Output() modalClickResult: EventEmitter<number>; //0 - cancel //1- ok //2-etc
   @Input() onCancelAction: Function;
   @Output() modalStateOpen: EventEmitter<boolean>;
 
   constructor() { 
     this.isOpen = false;
     this.size = "";
-    this.okClicked = new EventEmitter<boolean>();
-    this.okClicked.emit(false);
-    this.cancelClicked = new EventEmitter<boolean>();
-    this.cancelClicked.emit(false);
+    this.modalClickResult = new EventEmitter<number>();
+    this.modalClickResult.emit(0);
     this.container = new SimpleModalContainer();
     this.modalStateOpen = new EventEmitter<boolean>();
     this.modalStateOpen.emit(this.isOpen);
@@ -38,7 +35,7 @@ export class SimpleModalTemplateComponent implements OnInit {
    * @memberOf SimpleModalTemplateComponent
    */
   onOkClick() {
-    this.okClicked.emit(true);
+    this.modalClickResult.emit(1);
     this.isOpen = false;
     this.modalStateOpen.emit(false);
   }
@@ -50,7 +47,7 @@ export class SimpleModalTemplateComponent implements OnInit {
    * @memberOf SimpleModalTemplateComponent
    */
   onCancelClick() {
-    this.cancelClicked.emit(true);
+    this.modalClickResult.emit(0);
     this.isOpen = false;
     this.modalStateOpen.emit(false);
   }

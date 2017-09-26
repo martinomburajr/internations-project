@@ -62,7 +62,6 @@ export abstract class AbstractRepository < T extends IEntity >
      * @memberof IRepository
      */
     update(paths: {}):Observable<firebase.Promise<void>> {
-      debugger;
         return Observable.of(this.afDB.object('/').update(paths));
     }
 
@@ -173,7 +172,6 @@ export abstract class AbstractRepository < T extends IEntity >
          * @memberof IGenericStorable
          */
         retrieveAllGeneric(): FirebaseListObservable<{}[]> {
-            console.log("BASE = " + this.entity.DB_BASE)
             return this.afDB.list(this.entity.DB_BASE);
         }
         /**

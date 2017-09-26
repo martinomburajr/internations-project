@@ -1,3 +1,6 @@
+import { SimpleModalTemplateModule } from '../../components/template/modal/simple-modal/simple-modal.template.module';
+import { MasterDetailComponent } from './subcomponent/master-detail/master-detail.component';
+import { ListComponent } from './subcomponent/list/list.component';
 import { UpdateGroupModule } from './submodule/update-group/update-group.module';
 import { CreateGroupModule } from './submodule/create-group/create-group.module';
 import { SimpleListComponent } from '../../components/template/list/simple-list/simple-list.component';
@@ -30,14 +33,14 @@ import {SimpleListContainer} from 'app/components/container/list/simple-list/sim
     SearchBarTemplateModule,
     MasterDetailTemplateModule,
     SimpleListTemplateModule,
-    // CreateGroupModule,
-    // UpdateGroupModule,
+    SimpleModalTemplateModule,
+    CreateGroupModule,
+    UpdateGroupModule,
     GroupRoutingModule,
   ],
   declarations: [GroupComponent,
-    // CreateGroupComponent,
-    // UpdateGroupComponent
-    // SimpleListComponent, MasterDetailTemplate, SearchBarTemplate
+    ListComponent,
+    MasterDetailComponent
 ], providers: [GroupRepository, GroupService, UserRepository, UserService]
 })
 export class GroupModule { }

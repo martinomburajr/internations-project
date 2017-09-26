@@ -38,7 +38,6 @@ export class SimpleListComponent implements OnInit {
 
   onListItemClick(index: number) {
     this.onIndexChanged.emit(index);
-    console.log("currIndex" + this.currentIndex);
     
     this.containers[this.currentIndex].classInfo = SimpleListContainer._LIST;
     this.containers[index].classInfo = SimpleListContainer._LIST_ACTIVE;
