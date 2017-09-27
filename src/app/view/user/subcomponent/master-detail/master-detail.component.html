@@ -1,8 +1,6 @@
 <div class="animated fadeIn card">
-        <!-- <span class="spinner" *ngIf="showLoading"></span> -->
-  <div>
       <div class="card-block mce-scroll" style="padding: 0.55rem" data-spy="scroll">
-          <span class="row m-0">
+          <div class="row m-0">
               <img class="col-sm-2" style="border-radius: 50%; min-height:140px; min-width:160px" src={{masterDetailUserData.user.displayPhoto}}>
               <div class="col-sm-6">
                   <h6 class="display-4 justify-content-center" style="font-size: 3rem">{{masterDetailUserData.user.name}}</h6>
@@ -13,7 +11,7 @@
                       Edit
                   </div>
               </div>
-          </span>
+          </div>
           <ul class="list-group list-group-flush">
               <li class="list-group-item">
                   <p class="card-text">
@@ -21,45 +19,41 @@
                   </p>
               </li>
               <li class="list-group-item">
-                      <p class="card-text">
-                            <b>Email: </b> &nbsp; &nbsp; &nbsp;  {{masterDetailUserData.user.email}}
-                      </p>
-                  </li>
+                    <p class="card-text">
+                        <b>Email: </b> &nbsp; &nbsp; &nbsp;  {{masterDetailUserData.user.email}}
+                    </p>
+                </li>
           </ul>
-
-          <h2 class="text-center" style="font-size: 1.5rem">Groups</h2>
-          <!-- <template-single-action-list [containers]="(container.list$ | async)"></template-single-action-list> -->
-
+    </div>  
+                    <h2 class="text-center" style="font-size: 1.5rem">Groups</h2>
           <!-- LIST -->
-          <div>
-      <div class="list-group row m-0" data-spy="scroll" *ngFor="let listItem of masterDetailUserData._groups; let j = index">
+    <div class="card-block">
+      <div class="list-group row m-0" *ngFor="let listItem of masterDetailUserData._groups; let j = index">
           <div class="row m-0">
-          <a class="list-group-item list-group-item-action flex-column col-10"
+          <div class="list-group-item-action flex-column align-items-start col-11"
           style="padding: 0.5rem"
           routerLinkActive="active" [routerLink]="['/groups']"
               (click)="onMasterDetailListItemClick(listItem)">
-                  <div class="d-flex m-0 container">
-                      <div class="row m-0">
-                          <div class="img-avatar">
-                              <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
-                          </div>
-                          <h5>
-                              {{listItem.name}}
-                          </h5>
-                      </div>
-                      <div class="align-text-bottom">
-                          <p>{{listItem.description}}</p>
-                      </div>
-                  </div>
-              </a>
-              <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onMasterDetailListDeleteClick(j)">
-                      <i class="fa fa-trash-o fa-2x"></i>
-              </div>
-              </div>
+              <div class="d-flex m-0 container">
+                    <div class="row m-0">
+                        <div class="img-avatar">
+                            <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
+                        </div>
+                        <h5>
+                            {{listItem.name}}
+                        </h5>
+                    </div>
+                    <div class="align-text-bottom">
+                        <p>{{listItem.description}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1 list-group-item list-group-item-action flex-column align-items-start" (click)="onMasterDetailListDeleteClick(j)">
+                    <i class="fa fa-trash-o fa-2x"></i>
+            </div>
+        </div>
       </div>
-      </div>
-      </div>
-      </div>
+    </div>
     <div class="card-footer">
         Created Date: {{masterDetailUserData.user.createdDate | date}}
     </div>

@@ -6,12 +6,12 @@
             (click)="onListItemClick(i)">
                 <div class="d-flex w-100 justify-content-between p-0 m-0 container">
                     <div class="row m-0">
-                        <div class="img-avatar">
-                            <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
+                        <div class="col-sm-3">
+                            <img src={{listItem.displayPhoto}} style="border-radius: 50%; min-height:40px; min-width:30px" >
                         </div>
-                        <h1>
+                        <p class="col-sm-9" style="font-size: 1.5rem">
                             {{listItem.name}}
-                        </h1>
+                        </p>
                     </div>
                 </div>
               </div>

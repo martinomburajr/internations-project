@@ -25,10 +25,11 @@
   
         <h2 class="text-center" style="font-size: 1.5rem">Members</h2>
         
+        <!-- LIST -->
         <div class="card-block">
-            <div class="list-group row m-0" data-spy="scroll" *ngFor="let listItem of masterDetailGroupData._users; let j = index">
+            <div class="list-group row m-0" *ngFor="let listItem of masterDetailGroupData._users; let j = index">
                 <div class="row m-0">
-                <a class="list-group-item list-group-item-action flex-column align-items-start col-10"
+                <div class="list-group-item-action flex-column align-items-start col-11"
                 style="padding: 0.5rem"
                 routerLinkActive="active" [routerLink]="['/users']"
                     (click)="onMasterDetailListItemClick(listItem)">
@@ -45,10 +46,10 @@
                                 <p>{{listItem.bio}}</p>
                             </div>
                         </div>
-                    </a>
-                    <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onMasterDetailListDeleteClick(j)">
-                            <i class="fa fa-trash-o fa-2x"></i>
-                    </div>
+                </div>
+                <div class="col-1 list-group-item list-group-item-action flex-column align-items-start danger" (click)="onMasterDetailListDeleteClick(j)">
+                        <i class="fa fa-trash-o fa-2x"></i>
+                </div>
                 </div>
             </div>
         </div>

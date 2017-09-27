@@ -4,17 +4,17 @@
     </div> -->
   <div class="list-group row m-0" data-spy="scroll" *ngFor="let listItem of (users$ | async); let i = index">
       <div class="row m-0">
-      <a class="list-group-item list-group-item-action flex-column align-items-start col-sm-10 h4"
+      <a class="list-group-item list-group-item-action flex-column align-items-start col-sm-10"
       style="padding: 0.5rem"
           (click)="onListItemClick(i)">
               <div class="d-flex w-100 justify-content-between m-0 container">
-                  <div class="row m-0">
-                      <div class="img-avatar">
-                          <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
+                  <div class="row m-0 ">
+                      <div class="col-sm-3">
+                          <img src={{listItem.displayPhoto}} class="img-avatar" style="border-radius: 50%; min-height:40px; min-width:30px">
                       </div>
-                      <h4>
+                      <div class="col-sm-7" style="font-size: 1.5rem">
                           {{listItem.name}}
-                      </h4>
+                      </div>
                   </div>
               </div>
           </a>
