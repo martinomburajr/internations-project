@@ -1,7 +1,7 @@
 <div class="animated fadeIn card">
       <div class="card-block mce-scroll" style="padding: 0.55rem" data-spy="scroll">
           <div class="row m-0">
-              <img class="col-sm-2" style="border-radius: 50%; min-height:140px; min-width:160px" src={{masterDetailUserData.user.displayPhoto}}>
+              <img class="col-sm-2" style="border-radius: 50%; min-height:140px; min-width:160px; max-height:140px; max-width:160px" src={{masterDetailUserData.user.displayPhoto}}>
               <div class="col-sm-6">
                   <h6 class="display-4 justify-content-center" style="font-size: 3rem">{{masterDetailUserData.user.name}}</h6>
               </div>
@@ -37,7 +37,7 @@
               <div class="d-flex m-0 container">
                     <div class="row m-0">
                         <div class="img-avatar">
-                            <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
+                            <img src={{listItem.displayPhoto}} class="img-avatar" style="border-radius: 50%; min-height:70px; min-width:80px; max-height:70px; max-width:80px">
                         </div>
                         <h5>
                             {{listItem.name}}
