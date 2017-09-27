@@ -3,12 +3,12 @@
   <div>
       <div class="card-block mce-scroll" style="padding: 0.55rem" data-spy="scroll">
           <span class="row m-0">
-              <img class="img-avatar col-sm-2" src={{masterDetailUserData.user.displayPhoto}}>
-              <div class="col-sm-8">
-                  <h6 class="display-4 justify-content-center" style="font-size: 2.1rem">{{masterDetailUserData.user.name}}</h6>
+              <img class="col-sm-2" style="border-radius: 50%; min-height:140px; min-width:160px" src={{masterDetailUserData.user.displayPhoto}}>
+              <div class="col-sm-6">
+                  <h6 class="display-4 justify-content-center" style="font-size: 3rem">{{masterDetailUserData.user.name}}</h6>
               </div>
-              <div class="col-sm-2">
-                  <div class="btn btn-danger-outline" (click)="onUpdateClick()">
+              <div class="col-sm-3 float-right">
+                  <div class="btn btn-danger-outline float-right" (click)="onUpdateClick()">
                       <i class="fa fa-wrench fa-2x"></i>
                       Edit
                   </div>
@@ -17,12 +17,12 @@
           <ul class="list-group list-group-flush">
               <li class="list-group-item">
                   <p class="card-text">
-                      {{masterDetailUserData.user.bio}}
+                        <b>Bio: </b> &nbsp; &nbsp; &nbsp; {{masterDetailUserData.user.bio}}
                   </p>
               </li>
               <li class="list-group-item">
                       <p class="card-text">
-                          {{masterDetailUserData.user.email}}
+                            <b>Email: </b> &nbsp; &nbsp; &nbsp;  {{masterDetailUserData.user.email}}
                       </p>
                   </li>
           </ul>

@@ -1,8 +1,10 @@
 <div class="animated fadeIn card">
+        <div class="card-block" style="max-height: 200px; min-height:200px">
+            <img style="min-height: 180px; min-width: 100%" src={{masterDetailGroupData.group?.displayPhoto}}>
+        </div>
         <div class="card-block mce-scroll" style="padding: 0.55rem" data-spy="scroll">
-            <div class="row m-0">
-                <img class="img-avatar col-sm-3" src={{masterDetailGroupData.group?.displayPhoto}} height="200px" width="200px">
-                <div class="col-sm-7">
+            <div class="row m-0"> 
+                <div class="col-sm-10">
                     <h2 class="justify-content-center" style="font-size: 2.1rem">{{masterDetailGroupData.group.name}}</h2>
                 </div>
                 <div class="col-sm-2 p-0">
@@ -15,52 +17,45 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
                     <p class="card-text">
-                        {{masterDetailGroupData.group.description}}
+                        <b>Description: </b> &nbsp; &nbsp; &nbsp; {{masterDetailGroupData.group.description}}
                     </p>
                 </li>
-                <li class="list-group-item">
-                        <p class="card-text">
-                            <!-- {{masterDetailGroupData.group.email}} -->
-                        </p>
-                    </li>
             </ul>
+        </div>  
   
-            <h2 class="text-center" style="font-size: 1.5rem">Members</h2>
-            <!-- <template-single-action-list [containers]="(container.list$ | async)"></template-single-action-list> -->
-  
-            <!-- LIST -->
-            <div>
-        <div class="list-group row m-0" data-spy="scroll" *ngFor="let listItem of masterDetailGroupData._users; let j = index">
-            <div class="row m-0">
-            <a class="list-group-item list-group-item-action flex-column align-items-start col-10"
-            style="padding: 0.5rem"
-            routerLinkActive="active" [routerLink]="['/users']"
-                (click)="onMasterDetailListItemClick(listItem)">
-                    <div class="d-flex m-0 container">
-                        <div class="row m-0">
-                            <div class="img-avatar">
-                                <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
+        <h2 class="text-center" style="font-size: 1.5rem">Members</h2>
+        
+        <div class="card-block">
+            <div class="list-group row m-0" data-spy="scroll" *ngFor="let listItem of masterDetailGroupData._users; let j = index">
+                <div class="row m-0">
+                <a class="list-group-item list-group-item-action flex-column align-items-start col-10"
+                style="padding: 0.5rem"
+                routerLinkActive="active" [routerLink]="['/users']"
+                    (click)="onMasterDetailListItemClick(listItem)">
+                        <div class="d-flex m-0 container">
+                            <div class="row m-0">
+                                <div class="img-avatar">
+                                    <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
+                                </div>
+                                <h5>
+                                    {{listItem.name}}
+                                </h5>
                             </div>
-                            <h5>
-                                {{listItem.name}}
-                            </h5>
+                            <div class="align-text-bottom">
+                                <p>{{listItem.bio}}</p>
+                            </div>
                         </div>
-                        <div class="align-text-bottom">
-                            <p>{{listItem.bio}}</p>
-                        </div>
+                    </a>
+                    <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onMasterDetailListDeleteClick(j)">
+                            <i class="fa fa-trash-o fa-2x"></i>
                     </div>
-                </a>
-                <div class="col-2 list-group-item list-group-item-action flex-column align-items-start" (click)="onMasterDetailListDeleteClick(j)">
-                        <i class="fa fa-trash-o fa-2x"></i>
                 </div>
-                </div>
-        </div>
-        </div>
+            </div>
         </div>
       <div class="card-footer">
             Created Date: {{masterDetailGroupData.group.createdDate | date}}
       </div>
-  </div>
+</div>
   
 
   <simple-modal-template [isOpen] = "showDeleteUserModal" [container]="deleteUserModalContainer" [size]="'lg'" (modalClickResult)="onModalClickResultDeleteUser($event)"></simple-modal-template>
