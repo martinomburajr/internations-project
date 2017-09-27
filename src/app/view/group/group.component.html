@@ -2,9 +2,9 @@
         <div class="card display-4 w-100 text-center pt-3 pb-3">
             Groups
             <div class="float-right mr-2">
-            <div class="btn btn-success" (click)="onCreateGroupClick()">
-                <i class="icon icon-plus fa-3x"></i>
-            </div>
+                <div class="btn btn-success" (click)="onCreateGroupClick()">
+                    <i class="icon icon-plus fa-3x"></i>
+                </div>
             </div>
         </div>
     
@@ -14,18 +14,18 @@
                     <!-- SEARCH BAR -->
                     <template-search-bar [service]="groupService" [action]="onSearchSelect" debounce="300"></template-search-bar>
                     <!-- LIST -->
-                    <template-group-list [groups$] = "groups$" (onCurrentIndexChange$)= "onCurrentIndexChange($event)"></template-group-list>
+                    <template-group-list (onCurrentIndexChange$)= "onCurrentIndexChange($event)"></template-group-list>
                 </div>      
                 <div class="col-sm-8">
                     <!-- MASTER DETAIL -->
-                    <template-group-master-detail [currentIndex$]="currentIndex$" [groups$]="groups$" (onUpdateClicked)="onUpdateClick($event)"></template-group-master-detail>
+                    <template-group-master-detail [currentIndex$]="currentIndex$" (onUpdateClicked)="onUpdateClick($event)"></template-group-master-detail>
                 </div>
             </div>
         </div>
     </div>
     
-    <template-create-group [groups$] = "groups$" [users$] = "users$" [wizardCreateOpen] = "wizardCreateOpen"></template-create-group>
+    <template-create-group [wizardCreateOpen] = "wizardCreateOpen"></template-create-group>
     
-    <template-update-group [groups$] = "groups$" [users$] = "users$" [wizardUpdateOpen] = "wizardUpdateOpen" [currentIndex$]="currentIndex$" (wizardState)="updateWizardState($event)"></template-update-group>
+    <template-update-group [wizardUpdateOpen] = "wizardUpdateOpen" [currentIndex$]="currentIndex$" (wizardState)="updateWizardState($event)"></template-update-group>
     
     

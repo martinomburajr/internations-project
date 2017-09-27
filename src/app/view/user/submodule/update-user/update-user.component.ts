@@ -22,20 +22,7 @@ export class UpdateUserComponent implements OnInit {
    * @memberOf UpdateUserComponent
    */
   @ViewChild('wizardUpdate') private wizardUpdate: Wizard;
-  /**
-   * The observable housing all the groups
-   * 
-   * @type {Observable<GroupEntity[]>}
-   * @memberOf UpdateUserComponent
-   */
-  @Input()groups$: Observable<GroupEntity[]>;
-  /**
-   * The observable housing all the users
-   * 
-   * @type {Observable<UserEntity[]>}
-   * @memberOf UpdateUserComponent
-   */
-  @Input()users$: Observable<UserEntity[]>;
+
   /**
    * An input variable from parent detailing if the wizard should open
    * 
@@ -57,6 +44,22 @@ export class UpdateUserComponent implements OnInit {
    * @memberOf UpdateUserComponent
    */
   @Output()wizardState = new EventEmitter<boolean>();
+
+  /**
+   * The observable housing all the users
+   * 
+   * @type {Observable<UserEntity[]>}
+   * @memberOf UpdateUserComponent
+   */
+  private users$: Observable<UserEntity[]>;
+
+    /**
+   * The observable housing all the groups
+   * 
+   * @type {Observable<GroupEntity[]>}
+   * @memberOf UpdateUserComponent
+   */
+  private groups$: Observable<GroupEntity[]>;
 
   /**
    * Temporarily stores an updateable user
@@ -83,6 +86,8 @@ export class UpdateUserComponent implements OnInit {
   }
   
   constructor(private userService: UserService, private groupService: GroupService, private afDB: AngularFireDatabase) { 
+    this.users$ =  this.userService.retrieveAllGenericAsEntity();
+    this.groups$ = this.groupService.retrieveAllGenericAsEntity();
     this.wizardState.emit(false);
   }
 
@@ -145,7 +150,7 @@ export class UpdateUserComponent implements OnInit {
    */
   onUpdateUser() {
     let path = {};
-    this.users$.subscribe(users => {
+    this.userService.retrieveAllGenericAsEntity().subscribe(users => {
       let userObj = this.userUpdateObject.user.purge();
       path['user/' + this.userUpdateObject.user.key] = userObj[this.userUpdateObject.user.key];
 

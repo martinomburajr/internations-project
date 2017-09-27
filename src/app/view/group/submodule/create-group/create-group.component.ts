@@ -15,8 +15,8 @@ export class CreateGroupComponent implements OnInit {
 
   @ViewChild("wizard") wizard: Wizard;
   @Input('wizardCreateOpen')wizardCreateOpen: boolean;
-  @Input()groups$: Observable<GroupEntity[]>;
-  @Input()users$: Observable<UserEntity[]>;
+  private groups$: Observable<GroupEntity[]>;
+  private users$: Observable<UserEntity[]>;
   private groupCreationObject: {
     group: GroupEntity,
     users: Array<string>,
@@ -26,7 +26,10 @@ export class CreateGroupComponent implements OnInit {
     users: new Array<string>(),
     _users: new Array<UserEntity>()
   } 
-  constructor(private userService: UserService, private groupService: GroupService) { }
+  constructor(private userService: UserService, private groupService: GroupService) { 
+    this.users$ = this.userService.retrieveAllGenericAsEntity();
+    this.groups$ = this.groupService.retrieveAllGenericAsEntity();
+  }
 
   ngOnInit() {
     this.userService.retrieveAllGenericAsEntity().subscribe(users => {
@@ -41,7 +44,7 @@ export class CreateGroupComponent implements OnInit {
     .filter(option => option.selected)
     .map(option => option.value)
 
-    this.users$.subscribe(groups => {
+    this.userService.retrieveAllGenericAsEntity().subscribe(groups => {
       this.groupCreationObject._users = this.groupCreationObject.users.map(key => {
         let foundUser: UserEntity;
         groups.forEach(group => {
@@ -64,7 +67,10 @@ export class CreateGroupComponent implements OnInit {
       path['group-by-user/' + userKey + '/' + this.groupCreationObject.group.key] = true;
     })
     this.groupService.updateSpecifiedPath(path).subscribe(promise => {
-      promise.then(resolve => console.log("Succesfully deleted"));
+      promise.then(resolve => {
+        window.location.reload();
+        console.log("Succesfully created")
+      });
       promise.catch(err => (err));
     });
   }

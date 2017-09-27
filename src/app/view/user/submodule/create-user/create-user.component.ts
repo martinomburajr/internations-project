@@ -62,7 +62,10 @@ export class CreateUserComponent implements OnInit {
       path['user-by-group/' + groupKey + '/' + this.userCreationObject.user.key] = true;
     })
     this.userService.updateSpecifiedPath(path).subscribe(promise => {
-      promise.then(resolve => console.log("Succesfully deleted"));
+      promise.then(resolve => {
+        window.location.reload();
+        console.log("Succesfully deleted")
+      });
       promise.catch(err => console.log(err));
     });
   }

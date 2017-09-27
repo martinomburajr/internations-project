@@ -69,11 +69,11 @@ export class UserComponent implements OnInit {
    * @memberOf UserComponent
    */
   constructor(private groupService: GroupService, private userService: UserService, private router: Router, private afDB: AngularFireDatabase) {
+
     this.users$ = new Observable<UserEntity[]>(x=>x);
+    this.groups$ = new Observable<GroupEntity[]>(x=>x);
     this.loadUsers();
     this.loadGroups();
-    
-    
   }
 
   ngOnInit() {
@@ -89,10 +89,40 @@ export class UserComponent implements OnInit {
   loadUsers():void {
     /**Retrieve all users from the database */
     this.users$ = this.userService.retrieveAllGenericAsEntity();
+
+    //ServerSide LOGIC - I WOULDNOT INCLUDE IN A REGULAR APP. CHECKS FOR DB-INCONSISTENCIES AND EITHER AMENDS OR DELETES
+    this.users$.subscribe(users => {
+      users.map(user => {
+        this.afDB.object('/group-by-user/' + user.key).subscribe(groupObj => {
+          let groupKeys = Object.keys(groupObj);
+          if(groupKeys.length == 0 || groupKeys[0] == '$value') {
+            let path = {};
+            path['/user/' + user.key] = null;
+            path['group-by-user/' + user.key] = null;
+            this.userService.updateSpecifiedPath(path).subscribe();
+          }
+        })
+      })
+    })
   }
 
   loadGroups(): void {
     this.groups$ = this.groupService.retrieveAllGenericAsEntity();
+
+    //ServerSide LOGIC - I WOULDNOT INCLUDE IN A REGULAR APP. CHECKS FOR DB-INCONSISTENCIES AND EITHER AMENDS OR DELETES
+    this.groups$.subscribe(groups => {
+      groups.map(group => {
+        this.afDB.object('/user-by-group/' + group.key).subscribe(userObj => {
+          let userKeys = Object.keys(userObj);
+          if(userKeys.length == 0 || userKeys[0] == "$value") {
+            let path = {};
+            path['/group/' + group.key] = null;
+            path['/user-by-group/' + group.key] = null;
+            this.groupService.updateSpecifiedPath(path).subscribe();
+          }
+        })
+      })
+    })
   }
 
   onSearchSelect(a: any) {

@@ -11,4 +11,29 @@ export class GroupService extends AbstractService<GroupEntity> {
         super(repository);
         this.entity = new GroupEntity();
     } 
+
+    /**
+     * Functionality ot delete group
+     * 
+     * @param {number} index 
+     * @param {GroupEntity} group 
+     * 
+     * @memberOf ListComponent
+     */
+    deleteGroup(index: number, group: GroupEntity) {
+        let path = {};
+            path['group/' + group.key] = null
+            path['user-by-group' + '/' + group.key] = null;
+            this.repository.afDB.object('/user-by-group/' + group.key).subscribe(obj  => {
+              let userKeys = Object.keys(obj);
+              userKeys.forEach(userKey => {
+                path['group-by-user/' + userKey + '/' + group.key] = null;
+              })
+              this.updateSpecifiedPath(path).subscribe(promise => {
+                promise.then(resolve => console.log("Succesfully deleted"));
+                promise.catch(err => console.log(err));
+                window.location.reload();
+              });
+            })
+      }
 }

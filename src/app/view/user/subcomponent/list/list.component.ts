@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
    * @type {Observable<UserEntity[]>}
    * @memberOf ListComponent
    */
-  @Input()users$: Observable<UserEntity[]>;
+  private users$: Observable<UserEntity[]>;
 
   /**
    * Will emit the result of an index change
@@ -55,6 +55,15 @@ export class ListComponent implements OnInit {
    */
   private deleteContainer: SimpleModalContainer;
 
+   /**
+     * Shows the spinner if data hasnt loaded
+     * 
+     * @private
+     * @type {boolean}
+     * @memberOf ListComponent
+     */
+    private showLoading: boolean = true;
+
 
   /**
    * Creates an instance of ListComponent.
@@ -70,6 +79,8 @@ export class ListComponent implements OnInit {
     this.onCurrentIndexChange$.emit(0);
     this.showModal = false;
     this.modalResult$.emit(-1);
+
+    this.users$ = this.userService.retrieveAllGenericAsEntity();
   }
 
   /**
@@ -92,7 +103,7 @@ export class ListComponent implements OnInit {
    */
   onDeleteUserClick(index:number) {
     this.showModal = true;
-    this.users$.subscribe(users => {
+    this.userService.retrieveAllGenericAsEntity().subscribe(users => {
       let user = users[index];
       this.initialiseDeleteModalContainer(user);
       this.modalResult$.subscribe(result => {
@@ -101,7 +112,7 @@ export class ListComponent implements OnInit {
           //user clicked cancel
         }else if(result == 1) {
           //user clicked ok
-          this.deleteUser(index, user);
+          this.userService.deleteUser(index, user);
         }else{
           //another unrecorded action was clicked
         }
@@ -109,29 +120,6 @@ export class ListComponent implements OnInit {
     })
   }
 
-  /**
-   * Functionality ot delete user
-   * 
-   * @param {number} index 
-   * @param {UserEntity} user 
-   * 
-   * @memberOf ListComponent
-   */
-  deleteUser(index: number, user: UserEntity) {
-    let path = {};
-        path['user/' + user.key] = null
-        path['group-by-user' + '/' + user.key] = null;
-        this.afDB.object('/group-by-user'+ '/' + user.key).subscribe(obj  => {
-          let groupKeys = Object.keys(obj);
-          groupKeys.forEach(groupKey => {
-            path['user-by-group/' + groupKey + '/' + user.key] = null;
-          })
-          this.userService.updateSpecifiedPath(path).subscribe(promise => {
-            promise.then(resolve => console.log("Succesfully deleted"));
-            promise.catch(err => console.log(err));
-          });
-        })
-  }
 
   /**
    * Receives the click result of the modal and emits it to the local variable

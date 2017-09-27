@@ -28,8 +28,8 @@ export class UpdateGroupComponent implements OnInit {
    * @type {Observable<GroupEntity[]>}
    * @memberOf UpdateGroupComponent
    */
-  @Input()groups$: Observable<GroupEntity[]>;
-  @Input()users$: Observable<UserEntity[]>;
+  private groups$: Observable<GroupEntity[]>;
+  private users$: Observable<UserEntity[]>;
   @Input('wizardUpdateOpen')wizardUpdateOpen: boolean;
   @Input()currentIndex$: EventEmitter<number>;
   @Output()wizardState = new EventEmitter<boolean>();
@@ -68,6 +68,9 @@ export class UpdateGroupComponent implements OnInit {
    */
   constructor(private userService: UserService, private groupService: GroupService, private afDB: AngularFireDatabase) { 
     this.wizardState.emit(false);
+
+    this.users$ = this.userService.retrieveAllGenericAsEntity();
+    this.groups$ = this.groupService.retrieveAllGenericAsEntity();
   }
 
   /**
@@ -77,7 +80,7 @@ export class UpdateGroupComponent implements OnInit {
    * @memberOf UpdateGroupComponent
    */
   ngOnInit() {
-    this.groups$.subscribe(groups => {
+    this.groupService.retrieveAllGenericAsEntity().subscribe(groups => {
       this.currentIndex$.subscribe(index => {
         this.groupUpdateObject.group = groups[index];
         let key = this.groupUpdateObject.group.key;
@@ -108,7 +111,7 @@ export class UpdateGroupComponent implements OnInit {
     .filter(option => option.selected)
     .map(option => option.value)
 
-    this.users$.subscribe(groups => {
+    this.userService.retrieveAllGenericAsEntity().subscribe(groups => {
       this.groupUpdateObject._users = this.groupUpdateObject.users.map(key => {
         let foundUser: UserEntity;
         groups.forEach(group => {
@@ -130,7 +133,7 @@ export class UpdateGroupComponent implements OnInit {
    */
   onUpdateGroup() {
     let path = {};
-    this.groups$.subscribe(group => {
+    this.groupService.retrieveAllGenericAsEntity().subscribe(group => {
       let groupObj = this.groupUpdateObject.group.purge();
       path['group/' + this.groupUpdateObject.group.key] = groupObj[this.groupUpdateObject.group.key];
 

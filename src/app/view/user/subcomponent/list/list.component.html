@@ -1,24 +1,24 @@
 <div class="animated fadeIn">
+    <!-- <div *ngIf="showLoading">
+        <span class="spinner" *ngIf="showLoading"></span>
+    </div> -->
   <div class="list-group row m-0" data-spy="scroll" *ngFor="let listItem of (users$ | async); let i = index">
       <div class="row m-0">
-      <a class="list-group-item list-group-item-action flex-column align-items-start col-sm-10"
+      <a class="list-group-item list-group-item-action flex-column align-items-start col-sm-10 h4"
       style="padding: 0.5rem"
           (click)="onListItemClick(i)">
               <div class="d-flex w-100 justify-content-between m-0 container">
                   <div class="row m-0">
                       <div class="img-avatar">
-                          <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
+                          <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
                       </div>
                       <h4>
                           {{listItem.name}}
                       </h4>
-                      <div class="align-text-bottom">
-                          <p>{{listItem.bio}}</p>
-                      </div>
                   </div>
               </div>
           </a>
-          <div class="col-sm-2 list-group-item list-group-item-action flex-column align-items-start " (click)="onDeleteUserClick(i)">
+          <div class="col-sm-2 list-group-item list-group-item-action flex-column align-items-start w-100 btn-warning" (click)="onDeleteUserClick(i)">
                   <i class="fa fa-trash-o fa-2x"></i>
           </div>
       </div>

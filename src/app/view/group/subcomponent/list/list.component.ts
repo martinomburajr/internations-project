@@ -15,12 +15,7 @@ import {AngularFireDatabase} from 'angularfire2/database';
 export class ListComponent implements OnInit {
 
 /**
-   * Retrieve a GroupEntity[] Observable from Parent
-   * 
-   * @type {Observable<GroupEntity[]>}
-   * @memberOf ListComponent
-   */
-  @Input()groups$: Observable<GroupEntity[]>;
+   
   
     /**
      * Will emit the result of an index change
@@ -55,22 +50,40 @@ export class ListComponent implements OnInit {
      * @memberOf ListComponent
      */
     private deleteContainer: SimpleModalContainer;
+
+
+    /**
+     * Shows the spinner if data hasnt loaded
+     * 
+     * @private
+     * @type {boolean}
+     * @memberOf ListComponent
+     */
+    private showLoading: boolean = true;
+
+
+    /** Retrieve a GroupEntity[] Observable from Parent
+    * 
+    * @type {Observable<GroupEntity[]>}
+    * @memberOf ListComponent
+    */
+   private groups$: Observable<GroupEntity[]>;
   
   
     /**
      * Creates an instance of ListComponent.
      * @param {UserService} userService 
      * @param {GroupService} groupService 
-     * @param {AngularFireDatabase} afDB 
      * 
      * @memberOf ListComponent
      */
-    constructor(private userService: UserService, private groupService: GroupService, private afDB: AngularFireDatabase) { 
+    constructor(private userService: UserService, private groupService: GroupService) { 
       this.deleteContainer = new SimpleModalContainer();
       this.onCurrentIndexChange$ = new EventEmitter<number>();
       this.onCurrentIndexChange$.emit(0);
       this.showModal = false;
       this.modalResult$.emit(-1);
+      this.groups$ = this.groupService.retrieveAllGenericAsEntity();
     }
   
     /**
@@ -92,46 +105,22 @@ export class ListComponent implements OnInit {
      * @memberOf ListComponent
      */
     onDeleteGroupClick(index:number) {
-      this.showModal = true;
-      this.groups$.subscribe(groups => {
+      this.groupService.retrieveAllGenericAsEntity().subscribe(groups => {
         let group = groups[index];
         this.initialiseDeleteModalContainer(group);
+        this.showModal = true;
         this.modalResult$.subscribe(result => {
           this.showModal = false;
           if(result == 0) {
             //group clicked cancel
           }else if(result == 1) {
             //group clicked ok
-            this.deleteGroup(index, group);
+            this.groupService.deleteGroup(index, group);
           }else{
             //another unrecorded action was clicked
           }
         })
       })
-    }
-  
-    /**
-     * Functionality ot delete group
-     * 
-     * @param {number} index 
-     * @param {GroupEntity} group 
-     * 
-     * @memberOf ListComponent
-     */
-    deleteGroup(index: number, group: GroupEntity) {
-      let path = {};
-          path['group/' + group.key] = null
-          path['user-by-group' + '/' + group.key] = null;
-          this.afDB.object('/user-by-group'+ '/' + group.key).subscribe(obj  => {
-            let userKeys = Object.keys(obj);
-            userKeys.forEach(userKey => {
-              path['group-by-user/' + userKey + '/' + group.key] = null;
-            })
-            this.groupService.updateSpecifiedPath(path).subscribe(promise => {
-              promise.then(resolve => console.log("Succesfully deleted"));
-              promise.catch(err => console.log(err));
-            });
-          })
     }
   
     /**
@@ -157,8 +146,13 @@ export class ListComponent implements OnInit {
      * @memberOf ListComponent
      */
     initialiseDeleteModalContainer(group: GroupEntity) {
-      this.deleteContainer.title = "Delete " + group.name;
-      this.deleteContainer.body = "Are you sure you want to delete " + group.name;
+      try{
+        this.deleteContainer.title = "Delete " + group.name;
+        this.deleteContainer.body = "Are you sure you want to delete " + group.name;
+      }catch(ex) {
+        this.deleteContainer.title = "Delete ";
+        this.deleteContainer.body = "Are you sure you want to delete ";
+      } 
     }
 
 }

@@ -1,13 +1,14 @@
 <div class="animated fadeIn card">
+        <!-- <span class="spinner" *ngIf="showLoading"></span> -->
   <div>
       <div class="card-block mce-scroll" style="padding: 0.55rem" data-spy="scroll">
           <span class="row m-0">
-              <img class="img-avatar col-sm-2" src={{masterDetailUserData.user.image}}>
+              <img class="img-avatar col-sm-2" src={{masterDetailUserData.user.displayPhoto}}>
               <div class="col-sm-8">
                   <h6 class="display-4 justify-content-center">{{masterDetailUserData.user.name}}</h6>
               </div>
               <div class="col-sm-2">
-                  <div class="btn btn-danger" (click)="onUpdateClick()">
+                  <div class="btn btn-danger-outline" (click)="onUpdateClick()">
                       <i class="fa fa-wrench fa-2x"></i>
                       Edit
                   </div>
@@ -35,11 +36,12 @@
           <div class="row m-0">
           <a class="list-group-item list-group-item-action flex-column col-10"
           style="padding: 0.5rem"
+          routerLinkActive="active" [routerLink]="['/groups']"
               (click)="onMasterDetailListItemClick(listItem)">
                   <div class="d-flex m-0 container">
                       <div class="row m-0">
                           <div class="img-avatar">
-                              <img src={{listItem.image}} class="img-avatar" height="30px" width="30px">
+                              <img src={{listItem.displayPhoto}} class="img-avatar" height="30px" width="30px">
                           </div>
                           <h5>
                               {{listItem.name}}
@@ -59,7 +61,7 @@
       </div>
       </div>
     <div class="card-footer">
-        Date of Birth: {{masterDetailUserData.user.createdDate | date}}
+        Created Date: {{masterDetailUserData.user.createdDate | date}}
     </div>
 </div>
 

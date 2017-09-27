@@ -3,7 +3,7 @@
   "version": "1.0.0-alpha.6",
   "description": "Internations Project",
   "author": "Martin Ombura Jr",
-  "url": "www.martinomburajr.com",
+  "url": "https://internations-project.firebaseio.com/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -113,6 +113,21 @@ export class GroupComponent implements OnInit {
   loadUsers():void {
     /**Retrieve all users from the database */
     this.users$ = this.userService.retrieveAllGenericAsEntity();
+
+    //ServerSide LOGIC - I WOULDNOT INCLUDE IN A REGULAR APP. CHECKS FOR DB-INCONSISTENCIES AND EITHER AMENDS OR DELETES
+    this.userService.retrieveAllGenericAsEntity().subscribe(users => {
+      users.map(user => {
+        this.afDB.object('/group-by-user/' + user.key).subscribe(groupObj => {
+          let groupKeys = Object.keys(groupObj);
+          if(groupKeys.length == 0 || groupKeys[0] == '$value') {
+            let path = {};
+            path['/user/' + user.key] = null;
+            path['group-by-user/' + user.key] = null;
+            this.userService.updateSpecifiedPath(path).subscribe();
+          }
+        })
+      })
+    })
   }
 
   /**
@@ -123,6 +138,21 @@ export class GroupComponent implements OnInit {
    */
   loadGroups(): void {
     this.groups$ = this.groupService.retrieveAllGenericAsEntity();
+
+    //ServerSide LOGIC - I WOULDNOT INCLUDE IN A REGULAR APP. CHECKS FOR DB-INCONSISTENCIES AND EITHER AMENDS OR DELETES
+    this.groupService.retrieveAllGenericAsEntity().subscribe(groups => {
+      groups.map(group => {
+        this.afDB.object('/user-by-group/' + group.key).subscribe(userObj => {
+          let userKeys = Object.keys(userObj);
+          if(userKeys.length == 0 || userKeys[0] == "$value") {
+            let path = {};
+            path['/group/' + group.key] = null;
+            path['/user-by-group/' + group.key] = null;
+            this.groupService.updateSpecifiedPath(path).subscribe();
+          }
+        })
+      })
+    })
   }
 
 

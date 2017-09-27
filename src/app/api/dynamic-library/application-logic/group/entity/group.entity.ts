@@ -31,6 +31,7 @@ export class GroupEntity extends AbstractEntity implements IGroupEntity {
     createdDate: number;
     DB_BASE = "/group";
     DB_BASE_BY_USER = "/group-by-user";
+
     constructor() {
         super();
         this.name = '';
@@ -39,6 +40,15 @@ export class GroupEntity extends AbstractEntity implements IGroupEntity {
         this.createdDate = Date.now();
     }
 
+    /**
+     * Converts a JSON object to a useable TS entity
+     * 
+     * @param {string} key 
+     * @param {{}} obj 
+     * @returns {GroupEntity} 
+     * 
+     * @memberOf GroupEntity
+     */
     convertObjectToEntity(key: string, obj: {}): GroupEntity {
         let groupEntity = new GroupEntity();
         groupEntity.key = key;
@@ -49,12 +59,20 @@ export class GroupEntity extends AbstractEntity implements IGroupEntity {
         return groupEntity;
     }
 
+    /**
+     * Destroys a Entity and converts it into a JSON Object, safe for the database
+     * 
+     * @returns {{}} 
+     * 
+     * @memberOf GroupEntity
+     */
     purge(): {} {
         let base = {};
         base[this.key] = {};
         base[this.key]['name'] = this.name;
         base[this.key]['description'] = this.description;
         base[this.key]['createdDate'] = this.createdDate;
+        if(this.displayPhoto){base[this.key]['displayPhoto'] = this.displayPhoto}
         return base;
     }
 }

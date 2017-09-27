@@ -1,3 +1,9 @@
+import {
+    GroupByUserService,
+} from '../../../../api/dynamic-library/application-logic/joins/group-by-user/group-by-user.service';
+import {
+    UserByGroupService,
+} from '../../../../api/dynamic-library/application-logic/joins/user-by-group/user-by-group.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchBarTemplateModule } from '../../../../components/template/search-bar/concrete/search-bar.template.module';
@@ -24,6 +30,6 @@ import {UpdateGroupComponent} from 'app/view/group/submodule/update-group/update
   declarations: [
     UpdateGroupComponent
   ], 
-  providers: [GroupRepository, GroupService, UserRepository, UserService]
+  providers: [GroupRepository, GroupService, UserRepository, UserService, UserByGroupService, GroupByUserService]
 })
 export class UpdateGroupModule { }

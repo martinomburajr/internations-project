@@ -39,6 +39,15 @@ export class UserEntity extends AbstractEntity implements IUserEntity {
         this.createdDate = Date.now();
     }
 
+    /**
+     * Converts a JSON object to a TS Entity
+     * 
+     * @param {string} key 
+     * @param {{}} obj 
+     * @returns {UserEntity} 
+     * 
+     * @memberOf UserEntity
+     */
     convertObjectToEntity(key: string, obj: {}): UserEntity {
         let userEntity = new UserEntity();
         userEntity.key = key;
@@ -50,6 +59,13 @@ export class UserEntity extends AbstractEntity implements IUserEntity {
         return userEntity;
     }
 
+    /**
+     * Breaks a TS Entity and converts it into a JSON object for the database
+     * 
+     * @returns {{}} 
+     * 
+     * @memberOf UserEntity
+     */
     purge(): {} {
           let base = {};
           base[this.key] = {};
@@ -58,11 +74,6 @@ export class UserEntity extends AbstractEntity implements IUserEntity {
           if(this.createdDate){base[this.key]['createdDate'] = this.createdDate;}
           if(this.email){base[this.key]['email'] = this.email;}
           if(this.displayPhoto){base[this.key]['displayPhoto'] = this.displayPhoto}
-        //   if(this.groups){
-        //       base[this.key]['groups'] = {};
-        //       this.groups.forEach(key => {
-        //           base[this.key]['groups'][key] = true;
-        //       })
           return base;
       }
 }

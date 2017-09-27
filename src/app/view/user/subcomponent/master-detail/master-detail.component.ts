@@ -16,18 +16,30 @@ import {AngularFireDatabase} from 'angularfire2/database';
 export class MasterDetailComponent implements OnInit {
 
   @Input()currentIndex$: EventEmitter<number>;
-  @Input()users$: Observable<UserEntity[]>;
   @Output()onUpdateClicked = new EventEmitter<boolean>();
 
+  private users$: Observable<UserEntity[]>;
   private index: number = 0;
   private modalResult: EventEmitter<number> = new EventEmitter<number>();
   private modalShow: boolean = false;
   private masterDetailUserData: {user: UserEntity, groups: Array<string>, _groups: Array<GroupEntity>} = {user: new UserEntity(), groups: new Array<string>(), _groups: new Array<GroupEntity>()}
 
+   /**
+     * Shows the spinner if data hasnt loaded
+     * 
+     * @private
+     * @type {boolean}
+     * @memberOf ListComponent
+     */
+    private showLoading: boolean = true;
+
   private deleteUserGroupContainer: SimpleModalContainer;
   constructor(private userService: UserService, private groupService: GroupService, private afDB: AngularFireDatabase) { 
     this.onUpdateClicked.emit(false);
     this.deleteUserGroupContainer = new SimpleModalContainer();
+
+    this.users$ = this.userService.retrieveAllGenericAsEntity();
+
   }
 
   onUpdateClick() {
@@ -35,7 +47,7 @@ export class MasterDetailComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.users$.subscribe(users => {
+    this.userService.retrieveAllGenericAsEntity().subscribe(users => {
       this.currentIndex$.subscribe(index => {
         this.index = index;
         let user = users[index];
@@ -61,7 +73,7 @@ export class MasterDetailComponent implements OnInit {
    * @memberOf MasterDetailComponent
    */
   onMasterDetailListDeleteClick(groupIndex: number) {
-    this.users$.subscribe(users => {
+    this.userService.retrieveAllGenericAsEntity().subscribe(users => {
 
           const user = users[this.index];
           //Retrieve the groups associated to the user
@@ -95,7 +107,7 @@ export class MasterDetailComponent implements OnInit {
             else{
               this.modalShow = true;
               this.deleteUserGroupContainer.title = "Delete group"
-              this.deleteUserGroupContainer.body = "Are you sure you want to remove this user from this group?"
+              this.deleteUserGroupContainer.body = "Are you sure you want to remove this group from this user?"
 
               this.modalResult.subscribe(result => {
                 let path = {};
